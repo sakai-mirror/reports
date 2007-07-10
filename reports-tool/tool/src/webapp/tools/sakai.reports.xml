@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<registration>
+    <tool
+            id="sakai.reports"
+            title="Reports"
+            description="Reports">
+            
+        <category name="course" />
+        <category name="project" />
+       <category name="portfolio" />
+       <category name="portfolioAdmin" />
+
+        <configuration name="help.id" value="arch" />
+    </tool> 
+</registration>
