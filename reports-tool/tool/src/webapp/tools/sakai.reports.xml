@@ -12,5 +12,7 @@
        <category name="portfolioAdmin" />
 
         <configuration name="help.id" value="arch" />
+        
+        <configuration name="functions.require" value="reports.view" /> 
     </tool> 
 </registration>
