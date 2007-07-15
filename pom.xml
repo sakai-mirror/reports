@@ -3,25 +3,25 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>pom</packaging>
   <parent>
-    <artifactId>master</artifactId>
+    <artifactId>base</artifactId>
     <groupId>org.sakaiproject</groupId>
     <version>M2</version>
-    <relativePath>../master/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <name>sakai-reports</name>
   <groupId>org.sakaiproject</groupId>
-  <artifactId>sakai-reports</artifactId>
+  <artifactId>reports-base</artifactId>
   <organization>
     <name>sakai</name>
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2003</inceptionYear>
-   <modules>
-     <module>reports-api/api</module>
-     <module>reports-impl/impl</module>
-     <module>reports-impl/pack</module>
-     <module>reports-tool/tool</module>
-   </modules>
+  <modules>
+    <module>reports-api/api</module>
+    <module>reports-impl/impl</module>
+    <module>reports-impl/pack</module>
+    <module>reports-tool/tool</module>
+  </modules>
   <build>
     <resources/>
   </build>
