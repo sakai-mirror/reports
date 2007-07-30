@@ -27,6 +27,7 @@ import org.sakaiproject.exception.UnsupportedFileTypeException;
 import org.sakaiproject.metaobj.shared.DownloadableManager;
 import org.sakaiproject.metaobj.shared.model.Id;
 import org.sakaiproject.reports.model.*;
+import org.sakaiproject.reports.logic.impl.ReportsDefinitionWrapper;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -41,6 +42,8 @@ public interface ReportsManager extends DownloadableManager, Job
 
    public static final String REPORTS_MESSAGE_BUNDLE = "org.sakaiproject.reports.bundle.Messages";
 
+   public void addReportDefinition(ReportsDefinitionWrapper reportDef);
+   
 
    /**
     * Sets the list of ReportDefinitions.  It also iterates through the list

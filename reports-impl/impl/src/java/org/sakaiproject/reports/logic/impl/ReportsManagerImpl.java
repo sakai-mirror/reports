@@ -1589,7 +1589,11 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
     }
 
-    protected ReportDefinitionXmlFile processDefinedDefinition(ReportsDefinitionWrapper wrapper) {
+   public void addReportDefinition(ReportsDefinitionWrapper reportDef) {
+      processDefinedDefinition(reportDef);
+   }
+
+   protected ReportDefinitionXmlFile processDefinedDefinition(ReportsDefinitionWrapper wrapper) {
         ReportDefinitionXmlFile definition = getReportDefinition(wrapper.getIdValue());
 
         if (definition == null) {

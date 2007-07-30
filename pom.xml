@@ -21,6 +21,7 @@
     <module>reports-impl/impl</module>
     <module>reports-impl/pack</module>
     <module>reports-tool/tool</module>
+    <module>reports-util/util</module>
   </modules>
   <build>
     <resources/>
