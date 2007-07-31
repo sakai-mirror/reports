@@ -1,8 +1,8 @@
 <projectDescription>
-  <name>sakai-reports-util</name>
+  <name>reports-util</name>
   <comment/>
   <projects>
-    <project>sakai-reports-api</project>
+    <project>reports-api</project>
   </projects>
   <buildSpec>
     <buildCommand>
