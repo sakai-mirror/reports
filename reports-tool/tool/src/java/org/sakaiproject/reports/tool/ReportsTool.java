@@ -586,6 +586,8 @@ public class ReportsTool {
 
     public String processActionCancel() {
         setImportFilesString(null);
+        setInvalidImportMessage(null);
+        setInvalidImport(false);
         return ReportsTool.mainPage;
     }
 
@@ -768,11 +770,14 @@ public class ReportsTool {
                         getContentHosting().getUuid(ref.getId()));
             } catch (ImportException ie) {
                 this.setInvalidImport(true);
+                return "";
             } catch (UnsupportedFileTypeException ufte) {
                 this.setInvalidImport(true);
+                return "";
             } catch (Exception ie) {
                 this.setInvalidImportMessage(invalidImportMessage + " " + ie.getMessage());
                 this.setInvalidImport(true);
+                return "";
             }
 
         }

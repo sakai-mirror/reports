@@ -1485,7 +1485,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
             if (mimeType.equals(new MimeType("application/xml")) ||
                     mimeType.equals(new MimeType("text/xml"))) {
-                ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(resource.getContent()));
+                ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(resource.getContent()), getBeanFactory());
                 ReportDefinitionXmlFile bean = importReport(resource);
                 if (bean != null) {
                     saveReportDef(bean, beanFactory);
