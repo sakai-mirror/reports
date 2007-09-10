@@ -696,7 +696,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String results = "[]";
-        StringBuffer strbuffer = new StringBuffer();
+        StringBuilder strbuffer = new StringBuilder();
         try {
             connection = getConnection(reportParam.getReportDefinitionParam().getReportDefinition().getUsesWarehouse());
             stmt = connection
@@ -812,7 +812,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
         int index = -1;
         for (Iterator i = rd.getQuery().iterator(); i.hasNext();) {
-                StringBuffer nextQuery = new StringBuffer(replaceSystemValues((String) i.next()));
+                StringBuilder nextQuery = new StringBuilder(replaceSystemValues((String) i.next()));
             if (index > -1) {
                 // <extraReportResult index="0">, <extraReportResult index="1"> etc.
                 Element currentReportResult = new Element("extraReportResult");
@@ -850,7 +850,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
      * @param rd
      * @param isFirstResult - true if this is the first sql query in the report, otherwise this should be false
      */
-    protected void executeQuery(StringBuffer query, List reportParams, Report report, Element reportElement,
+    protected void executeQuery(StringBuilder query, List reportParams, Report report, Element reportElement,
                                 ReportResult rr, ReportDefinition rd, boolean isFirstResult) {
         //     get the query from the Definition and replace the values
         //     no should be able to put in a system parameter into a report parameter and have it work
@@ -1072,7 +1072,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         return rr;
     }
 
-    public StringBuffer replaceForMultiSet(StringBuffer inQuery, List reportParams) {
+    public StringBuilder replaceForMultiSet(StringBuilder inQuery, List reportParams) {
         if (reportParams == null) {
             return inQuery;
         }
@@ -1090,7 +1090,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
                 if (rp.getListValue().size() > 1) {
                     int index = inQuery.indexOf("(?)");
                     inQuery.delete(index, index + 3);
-                    StringBuffer tempString = new StringBuffer("(");
+                    StringBuilder tempString = new StringBuilder("(");
                     for (int i = 0; i < rp.getListValue().size(); i++) {
                         tempString.append("?,");
                     }
@@ -1134,7 +1134,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         }
 
         Iterator iter = map.keySet().iterator();
-        StringBuffer str = new StringBuffer(inString);
+        StringBuilder str = new StringBuilder(inString);
 
         //	loop through all the parameters and find in query for replacement
         while (iter.hasNext()) {
