@@ -109,5 +109,8 @@
     <query name="findReportDefinitionFileById">
 		from ReportDefinitionXmlFile r WHERE r.reportDefId =?
    </query>
+    <query name="find24ReportDefinitions">
+		from ReportDefinitionXmlFile r WHERE r.xmlFile like('%org.theospi.portfolio.reports.model.ReportDefinition%')
+   </query>
     
 </hibernate-mapping>

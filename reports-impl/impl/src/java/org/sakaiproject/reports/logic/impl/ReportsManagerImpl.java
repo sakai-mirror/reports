@@ -77,13 +77,11 @@ import org.sakaiproject.reports.service.ReportFunctions;
 import org.sakaiproject.reports.service.ReportsManager;
 import org.sakaiproject.reports.service.ResultProcessor;
 import org.sakaiproject.reports.model.*;
-import org.sakaiproject.reports.logic.impl.ReportsDefinitionWrapper;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
@@ -94,7 +92,8 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * This class is a singleton that manages the reports on a general basis
@@ -179,7 +178,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
     private SchedulerManager schedulerManager;
 
    private boolean autoDdl = true;
-   
+
     protected BeanFactory beanFactory;
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
@@ -217,15 +216,19 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_EDIT);
         FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_DELETE);
         FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_SHARE);
-       
+
+       convert24to25Reports();
+
         if (isAutoDdl()) {
            initDefinedReportDefinitions();
         }
     }
 
-    public AuthenticationManager getAuthnManager() {
-        return authnManager;
-    }
+
+
+   public AuthenticationManager getAuthnManager() {
+       return authnManager;
+   }
 
     public void setAuthnManager(AuthenticationManager authnManager) {
         this.authnManager = authnManager;
@@ -1589,6 +1592,62 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
     }
 
+   protected void convert24to25Reports() {
+      getSecurityService().pushAdvisor(new AllowAllSecurityAdvisor());
+      
+      org.sakaiproject.tool.api.Session sakaiSession = SessionManager.getCurrentSession();
+      String userId = sakaiSession.getUserId();
+      sakaiSession.setUserId("admin");
+      sakaiSession.setUserEid("admin");
+      
+      try {           
+         Transformer trans = createTemplate("/org/sakaiproject/reports/conversion/reports24to25.xsl").newTransformer();
+         for (Iterator<ReportDefinitionXmlFile> i = get24Defintions().iterator(); i.hasNext();) {
+            process24Definition(i.next(), trans);
+         }
+      
+      } catch (MalformedURLException e) {
+         logger.error("error migrating 2.4 report definitions", e);
+      } catch (TransformerConfigurationException e) {
+         logger.error("error migrating 2.4 report definitions", e);
+      } catch (TransformerException e) {
+         logger.error("error migrating 2.4 report definitions", e);
+      } finally {
+         getSecurityService().popAdvisor();
+         sakaiSession.setUserEid(userId);
+         sakaiSession.setUserId(userId);
+      }
+      
+   }
+
+   protected void process24Definition(ReportDefinitionXmlFile reportDefinitionXmlFile, Transformer trans) 
+      throws TransformerException {
+      
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      Document doc = reportDefinitionXmlFile.getXml();
+      trans.transform(new JDOMSource(doc), new StreamResult(bos));
+      reportDefinitionXmlFile.setXmlFile(bos.toByteArray());
+      getHibernateTemplate().saveOrUpdate(reportDefinitionXmlFile);
+   }
+
+   protected List<ReportDefinitionXmlFile> get24Defintions() {
+      return getHibernateTemplate().findByNamedQuery("find24ReportDefinitions");
+   }
+
+   protected Templates createTemplate(String transformPath)
+      throws MalformedURLException, TransformerConfigurationException {
+
+      InputStream stream = getClass().getResourceAsStream(
+            transformPath);
+      URL url = getClass().getResource(transformPath);
+      String urlPath = url.toString();
+      String systemId = urlPath.substring(0, urlPath.lastIndexOf('/') + 1);
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Templates templates = transformerFactory.newTemplates(
+         new StreamSource(stream, systemId));
+      return templates;
+   }
+
    public void addReportDefinition(ReportsDefinitionWrapper reportDef) {
       processDefinedDefinition(reportDef);
    }
@@ -1612,7 +1671,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
             if (stream== null) {
                 new RuntimeException ("Loaded Report Definition failed: " + wrapper.getDefinitionFileLocation());
             }
-            Set xslFiles = new HashSet(); 
+            Set xslFiles = new HashSet();
             def.setXmlFile(readStreamToBytes(getClass().getResourceAsStream(wrapper.getDefinitionFileLocation())));
 
             ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(readStreamToBytes(getClass().getResourceAsStream(wrapper.getDefinitionFileLocation()))), getBeanFactory());
