@@ -110,7 +110,7 @@
 		from ReportDefinitionXmlFile r WHERE r.reportDefId =?
    </query>
     <query name="find24ReportDefinitions">
-		from ReportDefinitionXmlFile r WHERE r.xmlFile like('%org.theospi.portfolio.reports.model.ReportDefinition%')
+		from ReportDefinitionXmlFile r
    </query>
     
 </hibernate-mapping>
