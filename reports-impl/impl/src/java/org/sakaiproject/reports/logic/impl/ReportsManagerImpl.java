@@ -178,6 +178,8 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
     private SchedulerManager schedulerManager;
 
    private boolean autoDdl = true;
+   
+   private boolean upgrade24 = true;
 
     protected BeanFactory beanFactory;
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
@@ -208,20 +210,22 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
      * @throws Exception
      */
     protected void init() throws Exception {
-        logger.info("init() ReportsManagerImpl");
-        // register functions
-        FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_CREATE);
-        FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_RUN);
-        FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_VIEW);
-        FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_EDIT);
-        FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_DELETE);
-        FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_SHARE);
-
-       convert24to25Reports();
-
-        if (isAutoDdl()) {
-           initDefinedReportDefinitions();
-        }
+      logger.info("init() ReportsManagerImpl");
+      // register functions
+      FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_CREATE);
+      FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_RUN);
+      FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_VIEW);
+      FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_EDIT);
+      FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_DELETE);
+      FunctionManager.registerFunction(ReportFunctions.REPORT_FUNCTION_SHARE);
+      
+      if (isUpgrade24()) {
+         convert24to25Reports();
+      }
+      
+      if (isAutoDdl()) {
+         initDefinedReportDefinitions();
+      }
     }
 
 
@@ -1970,6 +1974,14 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
    public void setAutoDdl(boolean autoDdl) {
       this.autoDdl = autoDdl;
+   }
+
+   public boolean isUpgrade24() {
+      return upgrade24;
+   }
+
+   public void setUpgrade24(boolean upgrade24) {
+      this.upgrade24 = upgrade24;
    }
 
 }
