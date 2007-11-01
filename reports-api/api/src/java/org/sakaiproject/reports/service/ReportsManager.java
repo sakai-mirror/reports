@@ -240,4 +240,6 @@ public interface ReportsManager extends DownloadableManager, Job
 
      public String processSaveResultsToResources(ReportResult reportResult) throws IOException;
      public JobDetail processCreateJob(Report report);
+
+   void clientInit();
 }

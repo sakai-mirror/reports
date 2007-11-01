@@ -22,6 +22,7 @@ package org.sakaiproject.reports.logic.impl;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.HibernateException;
+import org.hibernate.Transaction;
 import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -223,12 +224,14 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
          convert24to25Reports();
       }
       
-      if (isAutoDdl()) {
-         initDefinedReportDefinitions();
-      }
     }
 
 
+   public void clientInit() {
+      if (isAutoDdl()) {
+         initDefinedReportDefinitions();
+      }
+   }
 
    public AuthenticationManager getAuthnManager() {
        return authnManager;
@@ -1604,6 +1607,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
       sakaiSession.setUserId("admin");
       sakaiSession.setUserEid("admin");
       
+      Transaction tx = getSession().beginTransaction();
       try {           
          Transformer trans = createTemplate("/org/sakaiproject/reports/conversion/reports24to25.xsl").newTransformer();
          for (Iterator<ReportDefinitionXmlFile> i = get24Defintions().iterator(); i.hasNext();) {
@@ -1611,12 +1615,18 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
          }
       
       } catch (MalformedURLException e) {
+         tx.rollback();
          logger.error("error migrating 2.4 report definitions", e);
       } catch (TransformerConfigurationException e) {
+         tx.rollback();
          logger.error("error migrating 2.4 report definitions", e);
       } catch (TransformerException e) {
+         tx.rollback();
          logger.error("error migrating 2.4 report definitions", e);
       } finally {
+         if (!tx.wasRolledBack()) {
+            tx.commit();
+         }
          getSecurityService().popAdvisor();
          sakaiSession.setUserEid(userId);
          sakaiSession.setUserId(userId);
@@ -1673,12 +1683,20 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
             InputStream stream =  getClass().getResourceAsStream(wrapper.getDefinitionFileLocation());
             if (stream== null) {
-                new RuntimeException ("Loaded Report Definition failed: " + wrapper.getDefinitionFileLocation());
+                throw new RuntimeException ("Loaded Report Definition failed: " + wrapper.getDefinitionFileLocation());
             }
-            Set xslFiles = new HashSet();
+            Set xslFilesToBeRemoved = new HashSet();
+            
+           if (def.getReportXslFiles() != null) {
+              xslFilesToBeRemoved.addAll(def.getReportXslFiles());
+           }
+           else {
+              def.setReportXslFiles(new HashSet());
+           }
             def.setXmlFile(readStreamToBytes(getClass().getResourceAsStream(wrapper.getDefinitionFileLocation())));
 
-            ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(readStreamToBytes(getClass().getResourceAsStream(wrapper.getDefinitionFileLocation()))), getBeanFactory());
+            ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(
+               readStreamToBytes(getClass().getResourceAsStream(wrapper.getDefinitionFileLocation()))), getBeanFactory());
             ReportDefinition repDef = getReportDefBean(beanFactory);
             List xsls = repDef.getXsls();
             for (Iterator i = xsls.iterator(); i.hasNext();) {
@@ -1690,14 +1708,22 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
                 }
                 //xslFile.setReportDefId(repDef.getIdString());
                 xslFile.setReportXslFileRef(xsl.getXslLink());
-                xslFiles.add(xslFile);
-
+                if (def.getReportXslFiles().contains(xslFile)) {
+                   xslFilesToBeRemoved.remove(xslFile);
+                }
+               else {
+                   def.getReportXslFiles().add(xslFile);
+                }
             }
-            def.setReportXslFiles(xslFiles);
+            
+            for (Iterator<ReportXslFile> i=xslFilesToBeRemoved.iterator();i.hasNext();) {
+               ReportXslFile removedFile = i.next();
+               def.getReportXslFiles().remove(removedFile);
+            }
             getHibernateTemplate().saveOrUpdate(def);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Loaded report def failed", e);
         }
     }
 

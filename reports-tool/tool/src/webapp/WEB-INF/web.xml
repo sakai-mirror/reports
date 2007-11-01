@@ -116,7 +116,10 @@
     </listener>
     <listener>
         <listener-class>org.sakaiproject.util.ToolListener</listener-class>
-    </listener>
+    </listener>   
+    <listener>
+        <listener-class>org.sakaiproject.reports.tool.ReportsStartupListener</listener-class>
+    </listener>   
 
 <!--filepicker    <servlet>
         <servlet-name>sakai.syllabus</servlet-name>
