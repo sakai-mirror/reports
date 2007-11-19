@@ -6,41 +6,35 @@
 	<classpathentry kind="var" path="M2_REPO/xalan/xalan/2.6.0/xalan-2.6.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-digester/commons-digester/1.6/commons-digester-1.6.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-scheduler-api/SNAPSHOT/sakai-scheduler-api-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/jsf/jsf-api/1.1.01/jsf-api-1.1.01.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-jsf-app/SNAPSHOT/sakai-jsf-app-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-entity-api/SNAPSHOT/sakai-entity-api-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/taglibs/standard/1.0.4/standard-1.0.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-jsf-tool/SNAPSHOT/sakai-jsf-tool-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-component-api/SNAPSHOT/sakai-component-api-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-component/SNAPSHOT/sakai-component-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util-api/SNAPSHOT/sakai-util-api-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-authz-api/SNAPSHOT/sakai-authz-api-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.2/commons-io-1.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-tool-api/SNAPSHOT/sakai-tool-api-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.0.2/jstl-1.0.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-site-api/SNAPSHOT/sakai-site-api-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-fileupload/commons-fileupload/1.1.1/commons-fileupload-1.1.1.jar"/>
 	<classpathentry kind="src" path="/reports-api"/>
 	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/velocity/velocity/1.3.1/velocity-1.3.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util/SNAPSHOT/sakai-util-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-comp-shared-scheduler/SNAPSHOT/sakai-comp-shared-scheduler-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-content-api/SNAPSHOT/sakai-content-api-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-tool-lib/SNAPSHOT/sakai-metaobj-tool-lib-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/cglib/cglib-full/2.0.2/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
 	<classpathentry kind="var" path="M2_REPO/portlet-api/portlet-api/1.0.1/portlet-api-1.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-api/SNAPSHOT/sakai-metaobj-api-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-jsf-widgets-sun/SNAPSHOT/sakai-jsf-widgets-sun-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/jsf/jsf-impl/1.1.01/jsf-impl-1.1.01.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-jsf-widgets/SNAPSHOT/sakai-jsf-widgets-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/authz-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/component-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/entity-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jobscheduler"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jsf"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/metaobj-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/site-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/tool-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/util-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/content-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/util-util"/>
 	<classpathentry kind="output" path="tool/m2-target/classes"/>
 </classpath>

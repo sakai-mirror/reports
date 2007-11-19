@@ -11,15 +11,15 @@
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-digester/commons-digester/1.6/commons-digester-1.6.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-tool-api/SNAPSHOT/sakai-tool-api-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-content-util/SNAPSHOT/sakai-content-util-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-authz-api/SNAPSHOT/sakai-authz-api-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util/SNAPSHOT/sakai-util-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.6/commons-beanutils-1.6.jar"/>
 	<classpathentry kind="var" path="M2_REPO/portlet-api/portlet-api/1.0.1/portlet-api-1.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-api/SNAPSHOT/sakai-metaobj-api-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-impl/SNAPSHOT/sakai-metaobj-impl-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.2/commons-codec-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/reports-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/authz-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/content-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/metaobj-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/tool-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/util-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/metaobj-impl"/>
 	<classpathentry kind="output" path="util/m2-target/classes"/>
 </classpath>
