@@ -180,7 +180,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
    private boolean autoDdl = true;
    
-   private boolean upgrade24 = true;
+   private boolean upgrade24 = false;
 
     protected BeanFactory beanFactory;
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
