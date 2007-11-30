@@ -20,5 +20,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/entity-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/metaobj-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util-api"/>
-	<classpathentry kind="output" path="api/m2-target/classes"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

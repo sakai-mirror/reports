@@ -44,5 +44,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jobscheduler"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/metaobj-util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/metaobj-impl"/>
-	<classpathentry kind="output" path="impl/m2-target/classes"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
