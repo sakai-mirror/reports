@@ -24,7 +24,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.content.cover.ContentHostingService;
+import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.TypeException;
@@ -32,10 +32,8 @@ import org.sakaiproject.reports.model.ReportResult;
 import org.sakaiproject.reports.logic.impl.BaseResultProcessor;
 import org.sakaiproject.metaobj.security.impl.AllowAllSecurityAdvisor;
 
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * To use this class you need to place the resource UUID into a column of the report query.
@@ -58,21 +56,21 @@ public class LoadDisplayNamesProcessor extends BaseResultProcessor {
 
    private String columnNamePattern = ".*_displayname$";
    private SecurityService securityService;
+   private ContentHostingService contentHosting;
 
    /**
     * Post Processor method
     */
    public ReportResult process(ReportResult result) {
       Document rootDoc = getResults(result);
-      Map artifactsToLoad = new Hashtable();
-
-      List data = rootDoc.getRootElement().getChild("data").getChildren("datarow");
+      
+      List<Element> data = rootDoc.getRootElement().getChild("data").getChildren("datarow");
       
       getSecurityService().pushAdvisor(new AllowAllSecurityAdvisor());
       
-      for (Iterator i=data.iterator();i.hasNext();) {
+      for (Iterator<Element> i=data.iterator();i.hasNext();) {
          Element dataRow = (Element)i.next();
-         processRow(dataRow, artifactsToLoad);
+         processRow(dataRow);
       }
 
       getSecurityService().popAdvisor();
@@ -86,17 +84,17 @@ public class LoadDisplayNamesProcessor extends BaseResultProcessor {
     * @param dataRow
     * @param artifactsToLoad
     */
-   protected void processRow(Element dataRow, Map artifactsToLoad) {
-      List columns = dataRow.getChildren("element");
+   protected void processRow(Element dataRow) {
+      List<Element> columns = dataRow.getChildren("element");
 
-      for (Iterator i=columns.iterator();i.hasNext();) {
+      for (Iterator<Element> i=columns.iterator();i.hasNext();) {
          Element data = (Element) i.next();
          if (isArtifactColumn(data) && !isColumnNull(data)) {
 
             String displayName = "";
             try {
-               String id = ContentHostingService.resolveUuid(getColumnData(data));
-               ContentResource resource = ContentHostingService.getResource(id);
+               String id = getContentHosting().resolveUuid(getColumnData(data));
+               ContentResource resource = getContentHosting().getResource(id);
                
                // this code comes from the ResourceTypePropertyAccess.getPropertyValue
                String propName = resource.getProperties().getNamePropDisplayName();
@@ -139,6 +137,14 @@ public class LoadDisplayNamesProcessor extends BaseResultProcessor {
 
    public void setSecurityService(SecurityService securityService) {
       this.securityService = securityService;
+   }
+
+   public ContentHostingService getContentHosting() {
+	   return contentHosting;
+   }
+
+   public void setContentHosting(ContentHostingService contentHosting) {
+	   this.contentHosting = contentHosting;
    }
 
 }

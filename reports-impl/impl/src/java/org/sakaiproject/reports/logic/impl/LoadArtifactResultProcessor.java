@@ -34,7 +34,7 @@ import javax.sql.DataSource;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.sakaiproject.authz.api.SecurityService;
-import org.sakaiproject.content.cover.ContentHostingService;
+import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
@@ -89,21 +89,22 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
    private ArtifactFinderManager artifactFinderManager;
    private SecurityService securityService;
    private ReportsManager reportsManager;
+   private ContentHostingService contentHosting;
 
    /**
     * Post Processor method
     */
    public ReportResult process(ReportResult result) {
       Document rootDoc = getResults(result);
-      Map artifactsToLoad = new Hashtable();
+      Map<String, ArtifactHolder> artifactsToLoad = new Hashtable<String, ArtifactHolder>();
 
-      List data = rootDoc.getRootElement().getChild("data").getChildren("datarow");
+      List<Element> data = rootDoc.getRootElement().getChild("data").getChildren("datarow");
 
       Element isWarehouseReportElement = rootDoc.getRootElement().getChild("isWarehouseReport");
 
       boolean isWarehouseReport = Boolean.valueOf(isWarehouseReportElement.getText());
 
-      for (Iterator i=data.iterator();i.hasNext();) {
+      for (Iterator<Element> i=data.iterator();i.hasNext();) {
          Element dataRow = (Element)i.next();
          processRow(dataRow, artifactsToLoad);
       }
@@ -113,7 +114,7 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
 
       loadArtifactTypes(artifactsToLoad, isWarehouseReport);
 
-      for (Iterator i=artifactsToLoad.values().iterator();i.hasNext();) {
+      for (Iterator<ArtifactHolder> i=artifactsToLoad.values().iterator();i.hasNext();) {
          ArtifactHolder holder = (ArtifactHolder) i.next();
          loadArtifact(result, holder);
       }
@@ -129,10 +130,10 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
     * @param dataRow
     * @param artifactsToLoad
     */
-   protected void processRow(Element dataRow, Map artifactsToLoad) {
-      List columns = dataRow.getChildren("element");
+   protected void processRow(Element dataRow, Map<String, ArtifactHolder> artifactsToLoad) {
+      List<Element> columns = dataRow.getChildren("element");
 
-      for (Iterator i=columns.iterator();i.hasNext();) {
+      for (Iterator<Element> i=columns.iterator();i.hasNext();) {
          Element data = (Element) i.next();
          if (isArtifactColumn(data) && !isColumnNull(data)) {
             Id artifactId = getIdManager().getId(getColumnData(data));
@@ -161,11 +162,11 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
     * ERROR: the list of artifact Ids can only be 1000 elements in size, restriction of Oracle
     * @param artifactsToLoad
     */
-   protected void loadArtifactTypes(Map artifactsToLoad, boolean useWarehouse) {
+   protected void loadArtifactTypes(Map<String, ArtifactHolder> artifactsToLoad, boolean useWarehouse) {
       String artifactIds = "";
       int numFound = 0;
       if(useWarehouse) {
-         for (Iterator i=artifactsToLoad.values().iterator();i.hasNext();) {
+         for (Iterator<ArtifactHolder> i=artifactsToLoad.values().iterator();i.hasNext();) {
             ArtifactHolder holder = (ArtifactHolder) i.next();
             if (holder.artifactType == null) {
                if (numFound != 0) {
@@ -186,13 +187,13 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
             loadArtifactTypes(artifactIds, artifactsToLoad);
          }
       } else {
-         for (Iterator i=artifactsToLoad.values().iterator();i.hasNext();) {
+         for (Iterator<ArtifactHolder> i=artifactsToLoad.values().iterator();i.hasNext();) {
             ArtifactHolder holder = (ArtifactHolder) i.next();
             if (holder.artifactType == null) {
 
                //String uri = ContentHostingService.resolveUuid(holder.artifactId.getValue());
                try {
-                  ContentResource resource = ContentHostingService.getResource(holder.artifactId.getValue());
+                  ContentResource resource = getContentHosting().getResource(holder.artifactId.getValue());
 
                   // this code comes from the ResourceTypePropertyAccess.getPropertyValue
                   String propName = resource.getProperties().getNamePropStructObjType();
@@ -229,10 +230,10 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
       Artifact art;
 
       if (finder instanceof EntityContextFinder) {
-         String uri = ContentHostingService.resolveUuid(holder.artifactId.getValue());
+         String uri = getContentHosting().resolveUuid(holder.artifactId.getValue());
 
          String hash = getReportsManager().getReportResultKey(
-               results, ContentHostingService.getReference(uri));
+               results, getContentHosting().getReference(uri));
          art = ((EntityContextFinder)finder).loadInContext(holder.artifactId,
             ReportsEntityProducer.REPORTS_PRODUCER,
             holder.artifactId.getValue(), hash);
@@ -245,7 +246,7 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
          Element xml = home.getArtifactAsXml(art);
 
          // replace the artifact uuid with the actual xml
-         for (Iterator i=holder.reportElements.iterator();i.hasNext();) {
+         for (Iterator<Element> i=holder.reportElements.iterator();i.hasNext();) {
             xml = (Element)xml.clone();
             Element element = (Element) i.next();
             element.removeContent();
@@ -265,7 +266,7 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
     * @param artifactIds  String
     * @param artifactsToLoad Map
     */
-   protected void loadArtifactTypes(String artifactIds, Map artifactsToLoad) {
+   protected void loadArtifactTypes(String artifactIds, Map<String, ArtifactHolder> artifactsToLoad) {
       Connection conn = null;
       ResultSet rs = null;
       try {
@@ -372,10 +373,18 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
       this.reportsManager = reportsManager;
    }
 
+   public ContentHostingService getContentHosting() {
+	   return contentHosting;
+   }
+
+   public void setContentHosting(ContentHostingService contentHosting) {
+	   this.contentHosting = contentHosting;
+   }
+
    protected class ArtifactHolder {
       public Id artifactId;
       public String artifactType;
-      public List reportElements = new ArrayList();
+      public List<Element> reportElements = new ArrayList<Element>();
    }
 
 }

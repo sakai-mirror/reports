@@ -152,6 +152,9 @@
       <property name="reportsManager">
          <ref bean="org.sakaiproject.reports.service.ReportsManager"/>
       </property>
+      <property name="contentHosting">
+      	<ref bean="org.sakaiproject.content.api.ContentHostingService" />
+      </property>
       <property name="columnNamePattern">
       	<value>.*_(artifact|ARTIFACT)$</value>
       </property>
@@ -161,6 +164,9 @@
       class="org.sakaiproject.reports.logic.impl.LoadDisplayNamesProcessor">
       <property name="securityService">
          <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      </property>
+      <property name="contentHosting">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService" />
       </property>
       <property name="columnNamePattern">
       	<value>.*_(displayname|DISPLAYNAME)$</value>
