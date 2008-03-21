@@ -11,14 +11,14 @@
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-digester/commons-digester/1.6/commons-digester-1.6.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-tool-api/M2/sakai-tool-api-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-content-util/M2/sakai-content-util-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-authz-api/M2/sakai-authz-api-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util/M2/sakai-util-M2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-tool-api/2.5.0/sakai-tool-api-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-content-util/2.5.0/sakai-content-util-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-authz-api/2.5.0/sakai-authz-api-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util/2.5.0/sakai-util-2.5.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.6/commons-beanutils-1.6.jar"/>
 	<classpathentry kind="var" path="M2_REPO/portlet-api/portlet-api/1.0.1/portlet-api-1.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-api/M2/sakai-metaobj-api-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-impl/M2/sakai-metaobj-impl-M2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-api/2.5.0/sakai-metaobj-api-2.5.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-impl/2.5.0/sakai-metaobj-impl-2.5.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.2/commons-codec-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/reports-api"/>
 	<classpathentry kind="output" path="util/m2-target/classes"/>
