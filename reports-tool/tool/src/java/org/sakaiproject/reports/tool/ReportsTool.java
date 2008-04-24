@@ -724,11 +724,11 @@ public class ReportsTool {
                 try {
                     resource = getContentHosting().getResource(id);
                 } catch (PermissionException pe) {
-                    logger.warn("Failed loading content: no permission to view file", pe);
+                    throw new RuntimeException("Failed loading content: no permission to view file", pe);
                 } catch (TypeException pe) {
-                    logger.warn("Wrong type", pe);
+                    throw new RuntimeException("Wrong type", pe);
                 } catch (IdUnusedException pe) {
-                    logger.warn("UnusedId: ", pe);
+                    throw new RuntimeException("UnusedId: ", pe);
                 }
 
                 importFilesString += resource.getProperties().getProperty(
