@@ -4,7 +4,7 @@
     <tool
             id="sakai.reports"
             title="Reports"
-            description="Reports">
+            description="Generate analysis reports using sakai and eportfolio data">
             
         <category name="course" />
         <category name="project" />
