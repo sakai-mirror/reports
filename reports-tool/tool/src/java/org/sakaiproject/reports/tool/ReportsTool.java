@@ -409,18 +409,8 @@ public class ReportsTool {
                 if (!drp.getIsValid()) {
                     if (msg.length() != 0)
                         msg += "<BR />";
-                    msg += getMessageFromBundle("badParam_start");
-                    msg += drp.getReportDefinitionParam().getTitle();
-                    msg += getMessageFromBundle("badParam_mid");
-                    if (drp.getIsString())
-                        msg += getMessageFromBundle("badParam_string_reason");
-                    if (drp.getIsInteger())
-                        msg += getMessageFromBundle("badParam_int_reason");
-                    if (drp.getIsFloat())
-                        msg += getMessageFromBundle("badParam_float_reason");
-                    if (drp.getIsDate())
-                        msg += getMessageFromBundle("badParam_date_reason");
-                    msg += getMessageFromBundle("badParam_end");
+                   
+                   msg += getErrorMessage(drp);
                 }
             }
             getWorkingReport().setParamErrorMessages(msg);
@@ -442,7 +432,22 @@ public class ReportsTool {
         }
     }
 
-    public String processEditParamsBack() {
+   protected String getErrorMessage(DecoratedReportParam drp) {
+      String reason = "";
+      if (drp.getIsString())
+         reason = getMessageFromBundle("badParam_string_reason");
+      if (drp.getIsInteger())
+         reason = getMessageFromBundle("badParam_int_reason");
+      if (drp.getIsFloat())
+         reason = getMessageFromBundle("badParam_float_reason");
+      if (drp.getIsDate())
+         reason = getMessageFromBundle("badParam_date_reason");
+      
+      return getMessageFromBundle("badParam", 
+         new Object[]{drp.getReportDefinitionParam().getTitle(), reason});
+   }
+
+   public String processEditParamsBack() {
         return createReportPage;
     }
 
