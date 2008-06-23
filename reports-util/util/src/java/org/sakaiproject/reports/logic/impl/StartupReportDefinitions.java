@@ -44,7 +44,9 @@ public class StartupReportDefinitions {
 
        try {
            for (Iterator i = getDefinitions().iterator(); i.hasNext();) {
-               getReportsManager().addReportDefinition((ReportsDefinitionWrapper) i.next());
+               ReportsDefinitionWrapper wrapper = (ReportsDefinitionWrapper) i.next();
+               wrapper.setParentClass(getClass());
+               getReportsManager().addReportDefinition(wrapper);
            }
 
        } finally {

@@ -15,6 +15,7 @@ public class ReportsDefinitionWrapper extends ReportDefinitionXmlFile {
    private String idValue;
    private String definitionFileLocation;
    private String beanId;
+   private Class parentClass;
 
     public String getDefinitionFileLocation() {
         return definitionFileLocation;
@@ -36,4 +37,12 @@ public class ReportsDefinitionWrapper extends ReportDefinitionXmlFile {
     public void setBeanId(String beanId) {
         this.beanId = beanId;
     }
+
+   public Class getParentClass() {
+      return parentClass;
+   }
+
+   public void setParentClass(Class parentClass) {
+      this.parentClass = parentClass;
+   }
 }

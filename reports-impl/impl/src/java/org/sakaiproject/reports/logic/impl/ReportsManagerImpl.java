@@ -96,6 +96,11 @@ import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.sakaiproject.time.api.Time;
+import org.sakaiproject.util.Validator;
+
+import java.lang.reflect.Method;
+
 /**
  * This class is a singleton that manages the reports on a general basis
  * <p/>
@@ -126,7 +131,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
     /**
      * Enebles logging
      */
-
+	
     private AuthenticationManager authnManager;
     /**
      * The global list of reports
@@ -695,6 +700,9 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
        }
     }
 
+    protected String escapeCommas(String value) { 
+        return value.replaceAll(",", "<<comma>>"); 
+    } 
 
     /**
      * gathers the data for dropdown/list box.
@@ -720,11 +728,11 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
                   strbuffer.append("(");
                }
                if (columns >= 1) {
-                  strbuffer.append(rs.getString(1));
+                  strbuffer.append(escapeCommas(rs.getString(1)));
                }
                 if (columns >= 2) {
                     strbuffer.append(";");
-                    strbuffer.append(rs.getString(2));
+                    strbuffer.append(escapeCommas(rs.getString(2)));
                     strbuffer.append(")");
                 }
                 strbuffer.append(",");
@@ -1112,35 +1120,38 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         }
         return inQuery;
     }
-
-
+    
     /**
      * {@inheritDoc}
      */
     public String replaceSystemValues(String inString) {
-
-        Session s = SessionManager.getCurrentSession();
-
+    	UserDirectoryService userDirectoryService = org.sakaiproject.user.cover.UserDirectoryService.getInstance();
+    	
+        Session s           = SessionManager.getCurrentSession();
+        User    user        = userDirectoryService.getCurrentUser();
+        String  worksiteId  = ToolManager.getCurrentPlacement().getContext();  // current site id
+        Site    site        = getCurrentWorksite(worksiteId);
+        
         Map map = new HashMap();
-        map.put("{userid}", s.getUserId());
+        map.put("{userid}", Validator.escapeSql(s.getUserId()));
         //system values are stored in session if report is scheduled through quartz
         if (s.getAttribute("toolid") == null){
             UserDirectoryService dirServ = org.sakaiproject.user.cover.UserDirectoryService.getInstance();
             User u = dirServ.getCurrentUser();
-            map.put("{userdisplayname}", u.getDisplayName());
-            map.put("{useremail}", u.getEmail());
-            map.put("{userfirstname}", u.getFirstName());
-            map.put("{userlastname}", u.getLastName());
-            map.put("{worksiteid}", ToolManager.getCurrentPlacement().getContext());
-            map.put("{toolid}", ToolManager.getCurrentPlacement().getId());
+            map.put("{userdisplayname}", Validator.escapeSql(u.getDisplayName()));
+            map.put("{useremail}", Validator.escapeSql(u.getEmail()));
+            map.put("{userfirstname}", Validator.escapeSql(u.getFirstName()));
+            map.put("{userlastname}", Validator.escapeSql(u.getLastName()));
+            map.put("{worksiteid}", Validator.escapeSql(ToolManager.getCurrentPlacement().getContext()));
+            map.put("{toolid}", Validator.escapeSql(ToolManager.getCurrentPlacement().getId()));
         }
         else {
-            map.put("{userdisplayname}", s.getAttribute("userdisplayname"));
-            map.put("{useremail}", s.getAttribute("useremail"));
-            map.put("{userfirstname}", s.getAttribute("userfirstname"));
-            map.put("{userlastname}", s.getAttribute("userlastname"));
-            map.put("{worksiteid}", s.getAttribute("worksiteid"));
-            map.put("{toolid}", s.getAttribute("toolid"));
+            map.put("{userdisplayname}", Validator.escapeSql((String) s.getAttribute("userdisplayname")));
+            map.put("{useremail}", Validator.escapeSql((String) s.getAttribute("useremail")));
+            map.put("{userfirstname}", Validator.escapeSql((String) s.getAttribute("userfirstname")));
+            map.put("{userlastname}", Validator.escapeSql((String) s.getAttribute("userlastname")));
+            map.put("{worksiteid}", Validator.escapeSql((String) s.getAttribute("worksiteid")));
+            map.put("{toolid}", Validator.escapeSql((String) s.getAttribute("toolid")));
         }
 
         Iterator iter = map.keySet().iterator();
@@ -1149,7 +1160,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         //	loop through all the parameters and find in query for replacement
         while (iter.hasNext()) {
 
-            //	get the paremeter and associated parameter definition
+            //	get the parameter and associated parameter definition
             String key = (String) iter.next();
 
             int i = str.indexOf(key);
@@ -1166,10 +1177,91 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
             }
         }
 
-        return str.toString();
+        String string = str.toString();
+        
+        // create a list of the supported bean objects whose values can be replaced
+        Map beans = new HashMap();
+        beans.put("{session.attribute.", s);
+        beans.put("{site.property."    , site);
+        beans.put("{user.property."    , user);
+        string = replaceSystemValues(string, beans);
+
+        beans = new HashMap();
+        beans.put("{session."          , s);
+        beans.put("{site."             , site);
+        beans.put("{user."             , user);
+        string = replaceSystemValues(string, beans);
+        
+        return string;
     }
 
+    private Site getCurrentWorksite(String worksiteId) {
+        Site site = null;
+        try {
+            if (worksiteId != null && worksiteId.trim().length() != 0)
+               site = SiteService.getSite(worksiteId);
+        } catch (IdUnusedException ex) {
+         // do nothing.  just return null.
+        }
+        return site;
+    }
+    
+    public String replaceSystemValues(String string, Map beans) {
 
+        StringBuffer buffer = new StringBuffer(string);
+        Set beanNames = beans.keySet();
+        for (Iterator it=beanNames.iterator(); it.hasNext(); ) {
+             String beanName = (String)it.next();
+            // see if the string contains reference(s) to the supported beans
+            for (int i=buffer.indexOf(beanName), j=beanName.length(); i != -1; i=buffer.indexOf(beanName)) {
+                // if it does, parse the property of the bean the report query references
+                int k = buffer.indexOf("}", i+j);
+                if (k == -1)
+                   throw new RuntimeException("Missing closing brace \"}\" in report query: " + string);
+                String property = buffer.substring(i+j, k);
+
+                // construct the bean property's corresponding "getter" method
+                String getter = null;
+                String param  = null;
+                if (beanName.indexOf(".attribute.") != -1) {
+                    getter = "getAttribute";
+                    param  = property;
+                } else if (beanName.indexOf(".property.") != -1) {
+                    getter = "getProperties";
+                    param  = null;
+                } else {
+                    getter = "get" + Character.toUpperCase(property.charAt(0)) + property.substring(1);
+                    param  = null;
+                }
+
+                try {
+                   // use reflection to invoke the method on the bean
+                   Object  bean   = beans.get(beanName);
+                   Class   clasz  = bean.getClass();
+                   Class[] args   = param == null ? (Class[])null : new Class[]{String.class};
+                   Method  method = clasz.getMethod(getter, args);
+                   Object  result = method.invoke(bean, (param == null ? (Object[])null : new Object[]{param}));
+
+                   if (beanName.indexOf(".property.") != -1) {
+                       clasz  = org.sakaiproject.entity.api.ResourceProperties.class;
+                       getter = "getProperty";
+                       args   = new Class[]{String.class};
+                       param  = property;
+                       method = clasz.getMethod(getter, args);
+                       result = method.invoke(result, new Object[]{param});
+                   }
+
+                   // replace the bean expression in the report query with the actual value of calling the bean's corresponding getter method
+                   buffer.delete(i, k+1);
+                   buffer.insert(i, (result == null ? "null" : result instanceof Time ? ((Time)result).toStringSql() : result.toString().replaceAll("'","''")));
+                } catch (Exception ex) {
+                   throw new RuntimeException(ex.getMessage(), ex);
+                }
+            }
+        }
+        return buffer.toString();
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -1588,7 +1680,9 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
         try {
             for (Iterator i = getDefinedDefintions().iterator(); i.hasNext();) {
-                definitions.add(processDefinedDefinition((ReportsDefinitionWrapper) i.next()));
+               ReportsDefinitionWrapper wrapper = (ReportsDefinitionWrapper)i.next();
+               wrapper.setParentClass(getClass());
+                definitions.add(processDefinedDefinition(wrapper));
             }
 
         } finally {
@@ -1681,7 +1775,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
     protected void updateDefinition(ReportsDefinitionWrapper wrapper, ReportDefinitionXmlFile def) {
         try {
 
-            InputStream stream =  getClass().getResourceAsStream(wrapper.getDefinitionFileLocation());
+            InputStream stream =  wrapper.getParentClass().getResourceAsStream(wrapper.getDefinitionFileLocation());
             if (stream== null) {
                 throw new RuntimeException ("Loaded Report Definition failed: " + wrapper.getDefinitionFileLocation());
             }
@@ -1693,17 +1787,17 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
            else {
               def.setReportXslFiles(new HashSet());
            }
-            def.setXmlFile(readStreamToBytes(getClass().getResourceAsStream(wrapper.getDefinitionFileLocation())));
+            def.setXmlFile(readStreamToBytes(wrapper.getParentClass().getResourceAsStream(wrapper.getDefinitionFileLocation())));
 
             ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(
-               readStreamToBytes(getClass().getResourceAsStream(wrapper.getDefinitionFileLocation()))), getBeanFactory());
+               readStreamToBytes(wrapper.getParentClass().getResourceAsStream(wrapper.getDefinitionFileLocation()))), getBeanFactory());
             ReportDefinition repDef = getReportDefBean(beanFactory);
             List xsls = repDef.getXsls();
             for (Iterator i = xsls.iterator(); i.hasNext();) {
                 ReportXsl xsl = (ReportXsl) i.next();
                 ReportXslFile xslFile = new ReportXslFile();
-                if (getClass().getResourceAsStream(xsl.getXslLink()) != null){
-                    xslFile.setXslFile(readStreamToBytes(getClass().getResourceAsStream(xsl.getXslLink())));
+                if (wrapper.getParentClass().getResourceAsStream(xsl.getXslLink()) != null){
+                    xslFile.setXslFile(readStreamToBytes(wrapper.getParentClass().getResourceAsStream(xsl.getXslLink())));
                     xslFile.setXslFileHash(DigestUtils.md5Hex(xslFile.getXslFile()));
                 }
                 //xslFile.setReportDefId(repDef.getIdString());

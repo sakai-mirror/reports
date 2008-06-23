@@ -180,7 +180,11 @@ public class DecoratedReportParam {
             }
         }
    }
-
+   
+   protected String unescapeCommas(String value) { 
+      return value.replaceAll("<<comma>>",","); 
+   }  
+   
    /**
     * gets the list of possible titles and values
     * This will return a List of drop down SelectItem.
@@ -224,11 +228,11 @@ public class DecoratedReportParam {
                if(elementData.length == 0)
                   array.add(new SelectItem());
                if(elementData.length == 1)
-                  array.add(new SelectItem(elementData[0].trim()));
+                  array.add(new SelectItem(unescapeCommas(elementData[0].trim())));
                if(elementData.length > 1)
-                  array.add(new SelectItem(elementData[0].trim(), elementData[1].trim()));
+                  array.add(new SelectItem(unescapeCommas(elementData[0].trim()), unescapeCommas(elementData[1].trim())));
             } else {
-               array.add(new SelectItem(element));
+               array.add(new SelectItem(unescapeCommas(element)));
             }
          }
 

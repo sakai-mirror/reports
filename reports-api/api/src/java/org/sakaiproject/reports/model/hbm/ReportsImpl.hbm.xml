@@ -8,14 +8,14 @@
     <class name="ReportDefinitionXmlFile"
            table="reports_def_xml" >
 
-        <id name="reportDefId" length="36" type="java.lang.String" column="reportDefId"/>
+        <id name="reportDefId" length="255" type="java.lang.String" column="reportDefId"/>
         <property name="xmlFile" column="xmlFile" type="binary" not-null="true" length="2147483647"/>
         <set name="reportXslFiles" table="report_xsl_file">
             <key column="reportDefId" />
             <composite-element class="ReportXslFile">
              <property name="reportXslFileRef" length="255" type="java.lang.String" column="reportXslFileRef"/>
              <property name="xslFile" column="xslFile" type="binary" length="2147483647"/>
-             <property name="xslFileHash" column="xslFileHash" type="java.lang.String" not-null="true" length="255" />
+             <property name="xslFileHash" column="xslFileHash" type="java.lang.String" not-null="true" length="50" />
             </composite-element>
         </set>
     </class>
