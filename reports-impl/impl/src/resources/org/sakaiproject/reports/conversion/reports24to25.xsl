@@ -46,6 +46,66 @@
       </xsl:copy>      
    </xsl:template>
 
+   <xsl:template match="ref[@bean='org.theospi.portfolio.reports.model.ResultsPostProcessor.rowcolumn']">
+      <xsl:copy>
+         <xsl:apply-templates select="@*" >
+         </xsl:apply-templates>
+         <xsl:attribute name="bean">org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumn</xsl:attribute>
+         <xsl:apply-templates select="node()" >
+         </xsl:apply-templates>
+      </xsl:copy>      
+   </xsl:template>
+
+   <xsl:template match="ref[@bean='org.theospi.portfolio.reports.model.ResultsPostProcessor.rowcolumneval']">
+      <xsl:copy>
+         <xsl:apply-templates select="@*" >
+         </xsl:apply-templates>
+         <xsl:attribute name="bean">org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumneval</xsl:attribute>
+         <xsl:apply-templates select="node()" >
+         </xsl:apply-templates>
+      </xsl:copy>      
+   </xsl:template>
+
+   <xsl:template match="ref[@bean='org.theospi.portfolio.reports.model.ResultsPostProcessor.rowcolumnupper']">
+      <xsl:copy>
+         <xsl:apply-templates select="@*" >
+         </xsl:apply-templates>
+         <xsl:attribute name="bean">org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumnupper</xsl:attribute>
+         <xsl:apply-templates select="node()" >
+         </xsl:apply-templates>
+      </xsl:copy>      
+   </xsl:template>
+
+   <xsl:template match="ref[@bean='org.theospi.portfolio.reports.model.ResultsPostProcessor.rowcolumnevalupper']">
+      <xsl:copy>
+         <xsl:apply-templates select="@*" >
+         </xsl:apply-templates>
+         <xsl:attribute name="bean">org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumnevalupper</xsl:attribute>
+         <xsl:apply-templates select="node()" >
+         </xsl:apply-templates>
+      </xsl:copy>      
+   </xsl:template>
+
+   <xsl:template match="ref[@bean='org.theospi.portfolio.reports.model.ResultProcessor.defaultArtifactLoader']">
+      <xsl:copy>
+         <xsl:apply-templates select="@*" >
+         </xsl:apply-templates>
+         <xsl:attribute name="bean">org.sakaiproject.reports.service.ResultProcessor.defaultArtifactLoader</xsl:attribute>
+         <xsl:apply-templates select="node()" >
+         </xsl:apply-templates>
+      </xsl:copy>      
+   </xsl:template>
+
+   <xsl:template match="ref[@bean='org.theospi.portfolio.reports.model.ResultProcessor.defaultDisplayNameLoader']">
+      <xsl:copy>
+         <xsl:apply-templates select="@*" >
+         </xsl:apply-templates>
+         <xsl:attribute name="bean">org.sakaiproject.reports.service.ResultProcessor.defaultDisplayNameLoader</xsl:attribute>
+         <xsl:apply-templates select="node()" >
+         </xsl:apply-templates>
+      </xsl:copy>      
+   </xsl:template>
+
    <!-- Identity transformation -->
    <xsl:template match="@*|*">
       <xsl:copy>
