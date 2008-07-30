@@ -21,35 +21,31 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>org.sakaiproject.kernel</groupId>
+      <artifactId>sakai-kernel-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-reports-api</artifactId>
       <version>${sakai.version}</version>
     </dependency>
-     <dependency>
-       <groupId>org.sakaiproject</groupId>
-       <artifactId>sakai-metaobj-api</artifactId>
-       <version>${sakai.version}</version>
-     </dependency>
-     <dependency>
-       <groupId>org.sakaiproject</groupId>
-       <artifactId>sakai-metaobj-impl</artifactId>
-       <version>${sakai.version}</version>
-     </dependency>
-     <dependency>
-       <groupId>org.sakaiproject</groupId>
-       <artifactId>sakai-tool-api</artifactId>
-       <version>${sakai.version}</version>
-     </dependency>
-     <dependency>
-       <groupId>org.sakaiproject</groupId>
-       <artifactId>sakai-authz-api</artifactId>
-       <version>${sakai.version}</version>
-     </dependency>
-     <dependency>
-       <groupId>quartz</groupId>
-       <artifactId>quartz</artifactId>
-       <version>1.5.2</version>
-     </dependency>
+    <dependency>
+      <groupId>org.sakaiproject</groupId>
+      <artifactId>sakai-metaobj-api</artifactId>
+      <version>${sakai.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject</groupId>
+      <artifactId>sakai-metaobj-impl</artifactId>
+      <version>${sakai.version}</version>
+    </dependency>
+<!--org.sakaiprojectsakai-tool-api${sakai.version}-->
+<!--org.sakaiprojectsakai-authz-api${sakai.version}-->
+    <dependency>
+      <groupId>quartz</groupId>
+      <artifactId>quartz</artifactId>
+      <version>1.5.2</version>
+    </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>

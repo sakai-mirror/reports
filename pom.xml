@@ -16,14 +16,11 @@
     <url>http://sakaiproject.org/</url>
   </organization>
   <inceptionYear>2003</inceptionYear>
-  
   <scm>
     <connection>scm:svn:https://source.sakaiproject.org/svn/reports/trunk</connection>
     <developerConnection>scm:svn:https://source.sakaiproject.org/svn/reports/trunk</developerConnection>
     <url>https://source.sakaiproject.org/svn/reports/trunk</url>
   </scm>
-  
-
   <modules>
     <module>reports-api/api</module>
     <module>reports-impl/impl</module>
