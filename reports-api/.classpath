@@ -8,15 +8,15 @@
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.0.6/spring-2.0.6.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-db-api/M2/sakai-db-api-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util/M2/sakai-util-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util-api/M2/sakai-util-api-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-entity-api/M2/sakai-entity-api-M2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-db-api/2.5.2/sakai-db-api-2.5.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util/2.5.2/sakai-util-2.5.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-util-api/2.5.2/sakai-util-api-2.5.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-entity-api/2.5.2/sakai-entity-api-2.5.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/cglib/cglib-full/2.0.2/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/portlet-api/portlet-api/1.0.1/portlet-api-1.0.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-api/M2/sakai-metaobj-api-M2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-content-api/M2/sakai-content-api-M2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-metaobj-api/2.5.2/sakai-metaobj-api-2.5.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/sakai-content-api/2.5.2/sakai-content-api-2.5.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-digester/commons-digester/1.6/commons-digester-1.6.jar"/>
 	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
