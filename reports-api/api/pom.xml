@@ -21,6 +21,10 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-api</artifactId>
     </dependency>
@@ -42,11 +46,7 @@
       <artifactId>commons-digester</artifactId>
       <version>1.6</version>
     </dependency>
-    <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
-      <artifactId>${sakai.spring.artifactId}</artifactId>
-      <version>${sakai.spring.version}</version>
-    </dependency>
+<!--${sakai.spring.groupId}${sakai.spring.artifactId}${sakai.spring.version}-->
 <!--org.sakaiprojectsakai-util-api${sakai.version}-->
     <dependency>
       <groupId>quartz</groupId>
