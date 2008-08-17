@@ -27,17 +27,17 @@
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-reports-api</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-reports-component-shared</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-metaobj-tool-lib</artifactId>
-      <version>${sakai.version}</version>
+     
       <exclusions>
         <exclusion>
           <groupId>aopalliance</groupId>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-metaobj-impl</artifactId>
-      <version>${sakai.version}</version>
+     
       <exclusions>
         <exclusion>
           <groupId>aopalliance</groupId>

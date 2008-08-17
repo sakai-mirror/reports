@@ -36,17 +36,17 @@
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-reports-api</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-metaobj-tool-lib</artifactId>
-      <version>${sakai.version}</version>
+     
       <exclusions>
         <exclusion>
           <groupId>aopalliance</groupId>
@@ -77,12 +77,12 @@
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-comp-shared-scheduler</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-scheduler-api</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
     <dependency>
       <groupId>quartz</groupId>
@@ -118,18 +118,18 @@
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-jsf-tool</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-jsf-app</artifactId>
-      <version>${sakai.version}</version>
+     
     </dependency>
 <!--org.sakaiprojectsakai-util-api${sakai.version}-->
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-depend-jsf-widgets-sun</artifactId>
-      <version>${sakai.version}</version>
+     
       <type>pom</type>
     </dependency>
     <dependency>
