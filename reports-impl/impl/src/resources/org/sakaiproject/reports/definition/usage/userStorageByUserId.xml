@@ -33,15 +33,15 @@
                <value>
                    <![CDATA[
                  select sub_mime_type "file_type", count(*) "total_files" , avg(content_length) "avg_size" , sum(content_length) "total_size"
-                   from dw_resource where created_by = (select DW_USERS.user_id from DW_USERS
-                   where DW_USERS.user_eid = ? ) and parent_collection  like '/user/%'  group by sub_mime_type
+                   from dw_resource where created_by = (select dw_users.user_id from dw_users
+                   where dw_users.user_eid = ? ) and parent_collection  like '/user/%'  group by sub_mime_type
                    ]]>
                </value>
                 <value>
                     <![CDATA[
                   select sub_mime_type "file_type", count(*) "total_files" , avg(content_length) "avg_size" , sum(content_length) "total_size"
-                    from dw_resource where created_by = (select DW_USERS.user_id from DW_USERS
-                    where DW_USERS.user_eid = ? ) and parent_collection  like '/group/%'  group by sub_mime_type
+                    from dw_resource where created_by = (select dw_users.user_id from dw_users
+                    where dw_users.user_eid = ? ) and parent_collection  like '/group/%'  group by sub_mime_type
                     ]]>
                </value>
                 <value>
