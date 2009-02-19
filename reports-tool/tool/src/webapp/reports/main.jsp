@@ -10,8 +10,6 @@
                    action="#{ReportsTool.processPermissions}">
         <h:outputText value="#{msgs.permissions_link}"/>
     </h:commandLink>
-     <h:outputText value="#{' &nbsp; | &nbsp; '}" escape="false"
-                      rendered="#{ReportsTool.maintainer}"/>
     <h:commandLink rendered="#{ReportsTool.maintainer}"
                    action="#{ReportsTool.processImportDefinition}">
         <h:outputText value="#{msgs.import_report_def}"/>
