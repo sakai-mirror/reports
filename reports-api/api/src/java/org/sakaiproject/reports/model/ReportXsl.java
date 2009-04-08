@@ -1,9 +1,9 @@
 /**********************************************************************************
-* $URL:https://source.sakaiproject.org/svn/osp/trunk/reports/api/src/java/org/theospi/portfolio/reports/model/ReportXsl.java $
-* $Id:ReportXsl.java 9134 2006-05-08 20:28:42Z chmaurer@iupui.edu $
-***********************************************************************************
-*
- * Copyright (c) 2005, 2006, 2007 Sakai Foundation
+ * $URL:$
+ * $Id:$
+ ***********************************************************************************
+ *
+ * Copyright (c) 2008 Sakai Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*
-**********************************************************************************/
+ *
+ **********************************************************************************/
+
 package org.sakaiproject.reports.model;
 
 import org.sakaiproject.metaobj.shared.model.Id;
