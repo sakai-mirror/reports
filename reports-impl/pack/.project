@@ -1,0 +1,20 @@
+<projectDescription>
+  <name>sakai-reports-components</name>
+  <comment/>
+  <projects>
+    <project>sakai-content-util</project>
+    <project>sakai-metaobj-impl</project>
+    <project>sakai-metaobj-tool-lib</project>
+    <project>sakai-reports-api</project>
+    <project>sakai-reports-component-shared</project>
+    <project>sakai-util</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
