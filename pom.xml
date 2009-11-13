@@ -17,9 +17,9 @@
   </organization>
   <inceptionYear>2003</inceptionYear>
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/reports/trunk</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/reports/trunk</developerConnection>
-    <url>https://source.sakaiproject.org/svn/reports/trunk</url>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/reports/branches/sakai-2.7.x</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/reports/branches/sakai-2.7.x</developerConnection>
+    <url>https://source.sakaiproject.org/svn/reports/branches/sakai-2.7.x</url>
   </scm>
   <modules>
     <module>reports-api/api</module>
