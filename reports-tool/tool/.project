@@ -3,11 +3,6 @@
   <comment/>
   <projects>
     <project>sakai-comp-shared-scheduler</project>
-    <project>sakai-depend-jsf-widgets-sun</project>
-    <project>sakai-jsf-app</project>
-    <project>sakai-jsf-tool</project>
-    <project>sakai-jsf-widgets</project>
-    <project>sakai-jsf-widgets-sun</project>
     <project>sakai-metaobj-api</project>
     <project>sakai-metaobj-tool-lib</project>
     <project>sakai-reports-api</project>
