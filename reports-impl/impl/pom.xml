@@ -44,12 +44,9 @@
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-component-manager</artifactId>
     </dependency>
-<!--
-      This has been relocated to sakai-kernel-util
-      org.sakaiproject.kernel.utilsakai-util-->
     <dependency>
-      <groupId>org.sakaiproject</groupId>
-      <artifactId>sakai-comp-shared-scheduler</artifactId>
+      <groupId>org.sakaiproject.scheduler</groupId>
+      <artifactId>scheduler-component-shared</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
@@ -63,30 +60,18 @@
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-metaobj-impl</artifactId>
     </dependency>
-<!--org.sakaiprojectsakai-util${sakai.version}-->
-<!--org.sakaiprojectsakai-util${sakai.version}-->
-<!--org.sakaiprojectsakai-util-api${sakai.version}-->
-<!--org.sakaiprojectsakai-event-api${sakai.version}-->
-<!--org.sakaiprojectsakai-component-api${sakai.version}-->
-<!--org.sakaiprojectsakai-component${sakai.version}-->
-<!--org.sakaiprojectsakai-tool-api${sakai.version}-->
     <dependency>
       <groupId>org.sakaiproject</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
     </dependency>
-<!--org.sakaiprojectsakai-authz-api${sakai.version}-->
-<!--org.sakaiprojectsakai-site-api${sakai.version}-->
-<!--org.sakaiprojectsakai-user-api${sakai.version}-->
-<!--org.sakaiprojectsakai-entity-api${sakai.version}-->
-<!--org.sakaiprojectsakai-content-api${sakai.version}-->
     <dependency>
       <groupId>quartz</groupId>
       <artifactId>quartz</artifactId>
       <version>1.5.2</version>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject</groupId>
-      <artifactId>sakai-scheduler-api</artifactId>
+      <groupId>org.sakaiproject.scheduler</groupId>
+      <artifactId>scheduler-api</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
@@ -103,14 +88,11 @@
       <artifactId>commons-digester</artifactId>
       <version>1.6</version>
     </dependency>
-<!--${sakai.hibernate.groupId}${sakai.hibernate.artifactId}${sakai.hibernate.version}-->
-<!--${sakai.spring.groupId}${sakai.spring.artifactId}${sakai.spring.version}-->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jsp-api</artifactId>
       <version>2.0</version>
     </dependency>
-<!--javax.servletservlet-api${sakai.servletapi.version}-->
     <dependency>
       <groupId>jsf</groupId>
       <artifactId>jsf-api</artifactId>
