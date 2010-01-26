@@ -1,0 +1,20 @@
+<projectDescription>
+  <name>sakai-reports-api</name>
+  <comment/>
+  <projects>
+    <project>sakai-content-api</project>
+    <project>sakai-db-api</project>
+    <project>sakai-entity-api</project>
+    <project>sakai-metaobj-api</project>
+    <project>sakai-util</project>
+    <project>sakai-util-api</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
