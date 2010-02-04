@@ -1647,13 +1647,18 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
     public void deleteReportDefXmlFile(ReportDefinition reportDef) {
 
         checkPermission(ReportFunctions.REPORT_FUNCTION_DELETE);
-        List xsls = getHibernateTemplate().find("from ReportXslFile r where reportDefId = ?", reportDef.getIdString());
-        for (Iterator i = xsls.iterator(); i.hasNext();) {
-            getHibernateTemplate().delete(i.next());
+        List<ReportDefinitionXmlFile> defs = getHibernateTemplate().find("from ReportDefinitionXmlFile r where reportDefId = ?", reportDef.getIdString());
+        for (ReportDefinitionXmlFile def : defs) {
+            getHibernateTemplate().delete(def);
         }
-        List results = getHibernateTemplate().find("from ReportDefinitionXmlFile r where reportDefId = ?", reportDef.getIdString());
-        for (Iterator i = results.iterator(); i.hasNext();) {
-            getHibernateTemplate().delete(i.next());
+        
+        List<Report> reports = getHibernateTemplate().find("from Report r where reportDefIdMark = ?", reportDef.getIdString());
+        for (Report report : reports) {
+        	List<ReportResult> results = getHibernateTemplate().find("from ReportResult r where r.report.reportId = ?", report.getReportId());
+        	for (ReportResult rr : results) {
+        		getHibernateTemplate().delete(rr);
+        	}
+        	getHibernateTemplate().delete(report);
         }
     }
 
