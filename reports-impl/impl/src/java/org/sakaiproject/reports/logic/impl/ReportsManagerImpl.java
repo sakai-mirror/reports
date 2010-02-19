@@ -1268,7 +1268,6 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
     public String transform(ReportResult reportResult, ReportXsl reportXsl) {
         try {
 
-            JDOMResult result = new JDOMResult();
             SAXBuilder builder = new SAXBuilder();
             StreamSource xsltSource;
             if (reportXsl.getResource() == null) {
@@ -1778,9 +1777,10 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
     }
 
     protected void updateDefinition(ReportsDefinitionWrapper wrapper, ReportDefinitionXmlFile def) {
+        InputStream stream = null;
         try {
 
-            InputStream stream =  wrapper.getParentClass().getResourceAsStream(wrapper.getDefinitionFileLocation());
+            stream =  wrapper.getParentClass().getResourceAsStream(wrapper.getDefinitionFileLocation());
             if (stream== null) {
                 throw new RuntimeException ("Loaded Report Definition failed: " + wrapper.getDefinitionFileLocation());
             }
@@ -1792,18 +1792,30 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
            else {
               def.setReportXslFiles(new HashSet());
            }
-            def.setXmlFile(readStreamToBytes(wrapper.getParentClass().getResourceAsStream(wrapper.getDefinitionFileLocation())));
+            def.setXmlFile(readStreamToBytes(stream));
 
             ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(
-               readStreamToBytes(wrapper.getParentClass().getResourceAsStream(wrapper.getDefinitionFileLocation()))), getBeanFactory());
+               readStreamToBytes(stream)), getBeanFactory());
             ReportDefinition repDef = getReportDefBean(beanFactory);
             List xsls = repDef.getXsls();
             for (Iterator i = xsls.iterator(); i.hasNext();) {
                 ReportXsl xsl = (ReportXsl) i.next();
                 ReportXslFile xslFile = new ReportXslFile();
-                if (wrapper.getParentClass().getResourceAsStream(xsl.getXslLink()) != null){
-                    xslFile.setXslFile(readStreamToBytes(wrapper.getParentClass().getResourceAsStream(xsl.getXslLink())));
-                    xslFile.setXslFileHash(DigestUtils.md5Hex(xslFile.getXslFile()));
+                InputStream xslStream = null;
+                try {
+                   xslStream = wrapper.getParentClass().getResourceAsStream(xsl.getXslLink());
+                   if (xslStream != null){
+                       xslFile.setXslFile(readStreamToBytes(xslStream));
+                       xslFile.setXslFileHash(DigestUtils.md5Hex(xslFile.getXslFile()));
+                   }
+                } finally {
+                  if (xslStream != null) {
+                     try {
+                        xslStream.close();
+                     } catch (Exception e) {
+                        logger.debug("Error trying to close XSL stream", e);
+                     }
+                  }
                 }
                 //xslFile.setReportDefId(repDef.getIdString());
                 xslFile.setReportXslFileRef(xsl.getXslLink());
@@ -1823,6 +1835,14 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         }
         catch (Exception e) {
             throw new RuntimeException("Loaded report def failed", e);
+        } finally {
+         if (stream != null) {
+            try {
+               stream.close();
+            } catch (Exception e) {
+               logger.debug("Error closing stream for report file", e);
+            }
+         }
         }
     }
 
@@ -2047,40 +2067,44 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         Scheduler scheduler = getSchedulerManager().getScheduler();
         UserDirectoryService dirServ = org.sakaiproject.user.cover.UserDirectoryService.getInstance();
         User u = dirServ.getCurrentUser();
+        JobDetail jd = null;
         if (scheduler == null) {
             logger.error("Scheduler is down!");
         }
-        JobDetail jd = null;
-        try {
+        else {
+           try {
 
-            JobBeanWrapper job = getJobBeanWrapper();
-            if (job != null) {
+               JobBeanWrapper job = getJobBeanWrapper();
+               if (job != null) {
 
-                jd = scheduler.getJobDetail(report.getReportId().toString(), reportGroup);
-                if (jd == null) {
-                    jd = new JobDetail(report.getReportId().toString(), reportGroup,
-                            job.getJobClass(), false, true, true);
-                    jd.getJobDataMap().put(JobBeanWrapper.SPRING_BEAN_NAME, job.getBeanId());
-                    jd.getJobDataMap().put(JobBeanWrapper.JOB_TYPE, job.getJobType());
-                    jd.getJobDataMap().put("reportId", report.getReportId().getValue());
-                    jd.getJobDataMap().put("userId", SessionManager.getCurrentSessionUserId());
-                    jd.getJobDataMap().put("userdisplayname", u.getDisplayName());
-                    jd.getJobDataMap().put("useremail", u.getEmail());
-                    jd.getJobDataMap().put("userfirstname", u.getFirstName());
-                    jd.getJobDataMap().put("userlastname", u.getLastName());
-                    jd.getJobDataMap().put("worksiteid", ToolManager.getCurrentPlacement().getContext());
-                    jd.getJobDataMap().put("toolid", ToolManager.getCurrentPlacement().getId());
+                   jd = scheduler.getJobDetail(report.getReportId().toString(), reportGroup);
+                   if (jd == null) {
+                       jd = new JobDetail(report.getReportId().toString(), reportGroup,
+                               job.getJobClass(), false, true, true);
+                       jd.getJobDataMap().put(JobBeanWrapper.SPRING_BEAN_NAME, job.getBeanId());
+                       jd.getJobDataMap().put(JobBeanWrapper.JOB_TYPE, job.getJobType());
+                       jd.getJobDataMap().put("reportId", report.getReportId().getValue());
+                       jd.getJobDataMap().put("userId", SessionManager.getCurrentSessionUserId());
+                       jd.getJobDataMap().put("userdisplayname", u.getDisplayName());
+                       jd.getJobDataMap().put("useremail", u.getEmail());
+                       jd.getJobDataMap().put("userfirstname", u.getFirstName());
+                       jd.getJobDataMap().put("userlastname", u.getLastName());
+                       jd.getJobDataMap().put("worksiteid", ToolManager.getCurrentPlacement().getContext());
+                       jd.getJobDataMap().put("toolid", ToolManager.getCurrentPlacement().getId());
 
-                    scheduler.addJob(jd, false);
-                }
-            } else {
-                jd = new JobDetail(report.getReportId().toString(), reportGroup,
-                        SpringJobBeanWrapper.class, false, true, true);
-                scheduler.addJob(jd, false);
-            }
-        }
-        catch (Exception e) {
-            logger.error("Failed to create job");
+                       scheduler.addJob(jd, false);
+                   }
+               } else {
+                   jd = new JobDetail(report.getReportId().toString(), reportGroup,
+                           SpringJobBeanWrapper.class, false, true, true);
+                   scheduler.addJob(jd, false);
+               }
+           }
+           catch (Exception e) {
+               logger.error("Failed to create job");
+           }
+           if (jd == null) 
+              logger.error("Failed to create job");
         }
         return jd;
     }
