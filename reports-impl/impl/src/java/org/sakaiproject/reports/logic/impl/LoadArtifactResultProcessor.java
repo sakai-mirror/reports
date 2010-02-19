@@ -22,6 +22,7 @@ package org.sakaiproject.reports.logic.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -269,9 +270,11 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
    protected void loadArtifactTypes(String artifactIds, Map<String, ArtifactHolder> artifactsToLoad) {
       Connection conn = null;
       ResultSet rs = null;
+      Statement stmt = null;
       try {
          conn = getDataSource().getConnection();
-         rs = conn.createStatement().executeQuery(
+         stmt = conn.createStatement();
+         rs = stmt.executeQuery(
                "select id, sub_type from dw_resource where id in (" + artifactIds + ")");
          while (rs.next()) {
             String id = rs.getString(1);
@@ -287,6 +290,15 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
          throw new RuntimeException(e);
       }
       finally {
+         if (stmt != null) {
+            try {
+               stmt.close();
+            } catch (Exception e) {
+               if (logger.isDebugEnabled()) {
+                  logger.debug("loadArtifactTypes(String, Map) caught " + e);
+               }
+            }
+         }
          //ensure that the results set is clsoed
          if (rs != null) {
             try {
