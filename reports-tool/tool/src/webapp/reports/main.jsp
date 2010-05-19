@@ -36,12 +36,12 @@
 
         <h:outputText value="#{report.reportDefinition.description}"/>
     </h:column>
-    <h:column>
+    <h:column  rendered="#{ReportsTool.userCan.delete}">
          <f:facet name="header">
             <h:outputText value="#{msgs.delete}"/>
         </f:facet>
         <h:commandLink action="#{report.processDelete}"
-                       rendered="#{ReportsTool.maintainer  && report.reportDefinition.dbLoaded}">
+                       rendered="#{report.reportDefinition.dbLoaded}">
             <h:outputText value="#{msgs.delete_report}"/>
         </h:commandLink>
     </h:column>
