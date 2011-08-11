@@ -39,9 +39,8 @@
 <!--org.sakaiprojectsakai-tool-api${sakai.version}-->
 <!--org.sakaiprojectsakai-authz-api${sakai.version}-->
     <dependency>
-      <groupId>quartz</groupId>
+      <groupId>org.opensymphony.quartz</groupId>
       <artifactId>quartz</artifactId>
-      <version>1.5.2</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
