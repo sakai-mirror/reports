@@ -65,9 +65,8 @@
       <artifactId>sakai-metaobj-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>quartz</groupId>
+      <groupId>org.opensymphony.quartz</groupId>
       <artifactId>quartz</artifactId>
-      <version>1.5.2</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.scheduler</groupId>
