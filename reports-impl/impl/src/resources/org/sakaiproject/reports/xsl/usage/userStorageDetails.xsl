@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?altova_samplexml userstoragedetail.xml?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-    <link rel="stylesheet" media="all"
-					href="/library/skin/default/tool.css" type="text/css" />
+    <!--<link rel="stylesheet" media="all"
+					href="/library/skin/default/tool.css" type="text/css" />-->
     <xsl:template match="reportResult">
 		<div class="reportData1">User ID: <xsl:value-of select="parameters/parameter[@name='userId']"/></div>
 		<br/>

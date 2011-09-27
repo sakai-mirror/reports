@@ -83,6 +83,19 @@
 <!--org.sakaiprojectsakai-entity-api${sakai.version}-->
 <!--org.sakaiprojectsakai-content-api${sakai.version}-->
     <dependency>
+      <groupId>org.sakaiproject.osp</groupId>
+      <artifactId>osp-matrix-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.osp</groupId>
+      <artifactId>osp-common-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.taggable</groupId>
+      <artifactId>sakai-taggable-api</artifactId>
+      <version>2.9-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>quartz</groupId>
       <artifactId>quartz</artifactId>
       <version>1.5.2</version>
@@ -128,6 +141,10 @@
       <groupId>jdom</groupId>
       <artifactId>jdom</artifactId>
       <version>1.0</version>
+    </dependency>
+    <dependency>
+	<groupId>net.sf.ehcache</groupId>
+	<artifactId>ehcache-core</artifactId>
     </dependency>
   </dependencies>
   <build>

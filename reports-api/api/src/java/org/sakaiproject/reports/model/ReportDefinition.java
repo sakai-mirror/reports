@@ -59,6 +59,8 @@ public class ReportDefinition
 
    /** the link to the report parameters for the report definition */
    private List reportDefinitionParams;
+   
+   private List<ReportDefinitionParam> reportDefinitionProcessedParams;
 
    /** whether or not this report uses the datawarehouse, defaults to true */
    private Boolean usesWarehouse = Boolean.TRUE;
@@ -311,7 +313,18 @@ public class ReportDefinition
     }
 
 
-    /**
+    public void setReportDefinitionProcessedParams(
+			List<ReportDefinitionParam> reportDefinitionProcessedParams) {
+		this.reportDefinitionProcessedParams = reportDefinitionProcessedParams;
+	}
+
+
+	public List<ReportDefinitionParam> getReportDefinitionProcessedParams() {
+		return reportDefinitionProcessedParams;
+	}
+
+
+	/**
      * the getter for the xsls property
      * @return List the xsls
      */

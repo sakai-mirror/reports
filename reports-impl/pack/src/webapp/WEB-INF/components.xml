@@ -160,6 +160,23 @@
       </property>
    </bean>
 
+   <bean id="org.sakaiproject.reports.service.ResultProcessor.resourceIdArtifactLoader"
+      class="org.sakaiproject.reports.logic.impl.LoadArtifactByIdResultProcessor">
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="artifactFinderManager">
+         <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinderManager.reports" />
+      </property>
+      <property name="securityService">
+         <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      </property>
+      <property name="reportsManager">
+         <ref bean="org.sakaiproject.reports.service.ReportsManager"/>
+      </property>
+      <property name="columnNamePattern">
+      	<value>.*_(idartifact|IDARTIFACT)$</value>
+      </property>
+   </bean>
+
    <bean id="org.sakaiproject.reports.service.ResultProcessor.defaultDisplayNameLoader"
       class="org.sakaiproject.reports.logic.impl.LoadDisplayNamesProcessor">
       <property name="securityService">
@@ -173,6 +190,19 @@
       </property>
    </bean>
 
+   <bean id="org.sakaiproject.reports.service.ResultProcessor.defaultSiteUserLoader"
+      class="org.sakaiproject.reports.logic.impl.LoadSiteUserProcessor">
+      <property name="columnNamePattern">
+      	<value>.*_(siteuser|SITEUSER)$</value>
+      </property>
+      <property name="siteCache">
+      	<ref bean="org.sakaiproject.reports.siteCache"/>
+      </property>
+      <property name="userCache">
+      	<ref bean="org.sakaiproject.reports.userCache"/>
+      </property>
+   </bean>
+   
    <bean id="org.sakaiproject.entity.api.HttpAccess.reports"
       class="org.sakaiproject.reports.logic.impl.ReportsHttpAccess">
       <property name="reportsManager">
@@ -195,6 +225,9 @@
 
    <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.csv"
       class="org.sakaiproject.reports.logic.impl.CsvResultPostProcessor" />
+
+              <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.csvAdvanced"
+      class="org.sakaiproject.reports.logic.impl.CsvAdvancedResultPostProcessor" />
 
               <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumn"
                  class="org.sakaiproject.reports.logic.impl.GroupingResultProcessor">
@@ -238,6 +271,47 @@
                        </list>
                     </property>
               </bean>
+
+   <bean
+		id="org.sakaiproject.reports.service.ResultProcessor.defaultActivityLoader"
+		class="org.sakaiproject.reports.logic.impl.ActivityPostProcessor">
+		<property name="columnNamePattern">
+			<value>.*_(activity|ACTIVITY)$</value>
+		</property>
+		<property name="siteCache">
+      		<ref bean="org.sakaiproject.reports.siteCache"/>
+		</property>
+		<property name="taggingManager">
+			<ref bean="org.sakaiproject.taggable.api.TaggingManager"/>
+		</property>
+		<property name="provider">
+			<ref bean="org.theospi.portfolio.tagging.impl.MatrixTaggingProvider"/>
+		</property>
+	</bean>
+	
+	<bean
+		id="org.sakaiproject.reports.service.ResultProcessor.defaultCriteriaRefLoader"
+		class="org.sakaiproject.reports.logic.impl.CriteriaPostProcessor">
+		<property name="columnNamePattern">
+			<value>.*_(criteriaref|CRITERIAREF)$</value>
+		</property>
+		<property name="idManager">
+   			<ref bean="idManager" />
+   		</property>
+   		<property name="matrixManager">
+   			<ref bean="matrixManager" />
+   		</property>
+	</bean>
+              
+   <bean id="org.sakaiproject.reports.logic.impl.WizardPageDefReferenceParameterProcessor" 
+   		class="org.sakaiproject.reports.logic.impl.WizardPageDefReferenceParameterProcessor">
+   		<property name="idManager">
+   			<ref bean="idManager" />
+   		</property>
+   		<property name="matrixManager">
+   			<ref bean="matrixManager" />
+   		</property>
+   </bean>
 
    <bean id="org.sakaiproject.reports.service.ReportFunctions.REPORT_FUNCTION_CREATE"
       class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
@@ -297,6 +371,36 @@
             <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager"/>
         </property>
     </bean>
+<bean id="org.sakaiproject.reports.siteCache"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>org.sakaiproject.reports.siteCache</value>
+		</property>
+		<property name="maxElementsInMemory"><value>500</value></property>
+		<property name="diskPersistent"><value>false</value></property>
+		<property name="eternal"><value>false</value></property>
+		<property name="timeToLive"><value>60</value></property>
+		<property name="timeToIdle"><value>10</value></property>
+	</bean>
+	
+	<bean id="org.sakaiproject.reports.userCache"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>org.sakaiproject.reports.userCache</value>
+		</property>
+		<property name="maxElementsInMemory"><value>10000</value></property>
+		<property name="diskPersistent"><value>false</value></property>
+		<property name="eternal"><value>false</value></property>
+		<property name="timeToLive"><value>60</value></property>
+		<property name="timeToIdle"><value>10</value></property>
+	</bean>
+    
 </beans
 
 >

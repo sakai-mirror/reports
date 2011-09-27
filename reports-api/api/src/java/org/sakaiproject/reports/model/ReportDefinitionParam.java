@@ -22,6 +22,7 @@ package org.sakaiproject.reports.model;
 
 import org.sakaiproject.metaobj.shared.model.Id;
 import org.sakaiproject.reports.model.ReportDefinition;
+import org.sakaiproject.reports.service.ParameterResultsPostProcessor;
 
 public class ReportDefinitionParam
 {
@@ -71,6 +72,9 @@ public class ReportDefinitionParam
     *  or the static value
     */
    private String value;
+   
+   
+   private ParameterResultsPostProcessor resultProcessor;
 
 
 
@@ -263,4 +267,14 @@ public class ReportDefinitionParam
    {
       this.value = value.trim();
    }
+
+
+public void setResultProcessor(ParameterResultsPostProcessor resultProcessor) {
+	this.resultProcessor = resultProcessor;
+}
+
+
+public ParameterResultsPostProcessor getResultProcessor() {
+	return resultProcessor;
+}
 }

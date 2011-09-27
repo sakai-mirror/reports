@@ -26,6 +26,7 @@ import org.hibernate.Transaction;
 import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMResult;
@@ -73,6 +74,7 @@ import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.sakaiproject.metaobj.security.impl.AllowAllSecurityAdvisor;
+import org.sakaiproject.reports.service.ParameterResultsPostProcessor;
 import org.sakaiproject.reports.service.ReportExecutionException;
 import org.sakaiproject.reports.service.ReportFunctions;
 import org.sakaiproject.reports.service.ReportsManager;
@@ -709,7 +711,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
      *
      * @return String
      */
-    public String generateSQLParameterValue(ReportParam reportParam) {
+    public String generateSQLParameterValue(ReportParam reportParam, List<ReportParam> reportParams) {
         Connection connection = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -719,6 +721,8 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
             connection = getConnection(reportParam.getReportDefinitionParam().getReportDefinition().getUsesWarehouse());
             stmt = connection
                     .prepareStatement(replaceSystemValues(reportParam.getReportDefinitionParam().getValue()));
+            
+            buildPreparedStatementParameterList(reportParams, stmt, reportParam.getReportDefinitionParam().getReportDefinition());
 
             rs = stmt.executeQuery();
             strbuffer.append("[");
@@ -728,7 +732,12 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
                   strbuffer.append("(");
                }
                if (columns >= 1) {
-                  strbuffer.append(escapeCommas(rs.getString(1)));
+            	   String rsVal = rs.getString(1);
+            	   ParameterResultsPostProcessor prpp = reportParam.getReportDefinitionParam().getResultProcessor();
+            	   if (prpp != null) {
+            		   rsVal = prpp.process(rsVal);	
+            	   }
+                  strbuffer.append(escapeCommas(rsVal));
                }
                 if (columns >= 2) {
                     strbuffer.append(";");
@@ -745,7 +754,10 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         } catch (HibernateException e) {
             logger.error("", e);
             throw new RuntimeException(e);
-        }
+        } catch (ParseException e) {
+        	logger.error("", e);
+            throw new RuntimeException(e);
+		}
         finally {
             //ensure that the results set is clsoed
             if (rs != null) {
@@ -808,6 +820,34 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         return "";
 
     }
+    
+    private List<ReportParam> runProcessedReportParams(List<ReportDefinitionParam> defProcessedParams, List<ReportParam> reportParams, Report report, ReportDefinition rd) {
+    	List<ReportParam> retParams = new ArrayList<ReportParam>();
+    	retParams.addAll(reportParams);
+    	
+    	if (defProcessedParams != null) {
+    		Iterator<ReportDefinitionParam> iter = defProcessedParams.iterator();
+
+    		while (iter.hasNext()) {
+    			ReportDefinitionParam rdp = (ReportDefinitionParam) iter.next();
+    			rdp.setReportDefinition(rd);
+    			ReportParam rp = new ReportParam();
+
+    			rp.setReportDefinitionParam(rdp);
+    			rp.setReport(report);
+
+    			//	if the parameter is static then copy the value, otherwise it is filled by user
+
+    			rp.setValue(replaceSystemValues(rdp.getValue()));
+    			rp.setValue(generateSQLParameterValue(rp, reportParams));
+
+    			retParams.add(rp);
+    			report.getReportParams().add(rp);
+    		}
+    	}
+    	
+    	return retParams;
+    }
 
 
     /**
@@ -823,11 +863,14 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
         }
         rr.setCreationDate(new Date());
         Element reportElement = new Element("reportResult");
+        reportElement.addNamespaceDeclaration(Namespace.getNamespace("xs", "http://www.w3.org/2001/XMLSchema"));
         Document document = new Document(reportElement);
 
         //	replace the parameters with the values
         List reportParams = report.getReportParams();
-
+        
+        List<ReportParam> processedParams = runProcessedReportParams(rd.getReportDefinitionProcessedParams(), reportParams, report, rd);
+        
         int index = -1;
         for (Iterator i = rd.getQuery().iterator(); i.hasNext();) {
                 StringBuilder nextQuery = new StringBuilder(replaceSystemValues((String) i.next()));
@@ -836,9 +879,9 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
                 Element currentReportResult = new Element("extraReportResult");
                 currentReportResult.setAttribute("index", String.valueOf(index));
                 reportElement.addContent(currentReportResult);
-                executeQuery(nextQuery, reportParams, report, currentReportResult, rr, rd, false);
+                executeQuery(nextQuery, processedParams, report, currentReportResult, rr, rd, false);
             } else {
-                executeQuery(nextQuery, reportParams, report, reportElement, rr, rd, true);
+                executeQuery(nextQuery, processedParams, report, reportElement, rr, rd, true);
             }
             index++;
         }
@@ -855,6 +898,47 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
 
         return rr;
 
+    }
+    
+    private void buildPreparedStatementParameterList(List reportParams, PreparedStatement stmt, ReportDefinition rd) 
+    		throws SQLException, ParseException {
+    	if (reportParams != null) {
+            Iterator iter = reportParams.iterator();
+            int paramIndex = 0;
+
+            //	loop through all the parameters and find in query for replacement
+            while (iter.hasNext()) {
+
+                //	get the paremeter and associated parameter definition
+                ReportParam rp = (ReportParam) iter.next();
+                ReportDefinitionParam rdp = rp.getReportDefinitionParam();
+                if (ReportDefinitionParam.VALUE_TYPE_MULTI_OF_SET.equals(rdp.getValueType()) ||
+                        ReportDefinitionParam.VALUE_TYPE_MULTI_OF_QUERY.equals(rdp.getValueType())) {
+
+                    for (Iterator i = rp.getListValue().iterator(); i.hasNext();) {
+                        stmt.setString(paramIndex + 1, i.next().toString());
+                        paramIndex++;
+                    }
+
+                } else if (rp.getValue() == null) {
+                    throw new RuntimeException("The Report Parameter Value was blank.  Offending parameter: " + rdp.getParamName());
+                } else {
+                    String value = rp.getValue();
+
+                    //	Dates need to be formatted from user format to database format
+                    if (ReportDefinitionParam.TYPE_DATE.equals(rdp.getType())) {
+                        value = dbDateFormat.format(userDateFormat.parse(rp.getValue()));
+                        if ("oracle".equals(rd.getVendor())){
+                        SimpleDateFormat oracleFormat = new SimpleDateFormat("dd-MMM-yyyy");
+                        value = oracleFormat.format(userDateFormat.parse(rp.getValue()));
+                    }
+                    }
+                    stmt.setString(paramIndex + 1, value);
+                    paramIndex++;
+                }
+
+            }
+        }
     }
 
     /**
@@ -882,43 +966,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
             query = replaceForMultiSet(query, reportParams);
             stmt = connection.prepareStatement(query.toString());
             //If there are params, place them with values in the query
-            if (reportParams != null) {
-                Iterator iter = reportParams.iterator();
-                int paramIndex = 0;
-
-                //	loop through all the parameters and find in query for replacement
-                while (iter.hasNext()) {
-
-                    //	get the paremeter and associated parameter definition
-                    ReportParam rp = (ReportParam) iter.next();
-                    ReportDefinitionParam rdp = rp.getReportDefinitionParam();
-                    if (ReportDefinitionParam.VALUE_TYPE_MULTI_OF_SET.equals(rdp.getValueType()) ||
-                            ReportDefinitionParam.VALUE_TYPE_MULTI_OF_QUERY.equals(rdp.getValueType())) {
-
-                        for (Iterator i = rp.getListValue().iterator(); i.hasNext();) {
-                            stmt.setString(paramIndex + 1, i.next().toString());
-                            paramIndex++;
-                        }
-
-                    } else if (rp.getValue() == null) {
-                        throw new RuntimeException("The Report Parameter Value was blank.  Offending parameter: " + rdp.getParamName());
-                    } else {
-                        String value = rp.getValue();
-
-                        //	Dates need to be formatted from user format to database format
-                        if (ReportDefinitionParam.TYPE_DATE.equals(rdp.getType())) {
-                            value = dbDateFormat.format(userDateFormat.parse(rp.getValue()));
-                            if ("oracle".equals(rd.getVendor())){
-                            SimpleDateFormat oracleFormat = new SimpleDateFormat("dd-MMM-yyyy");
-                            value = oracleFormat.format(userDateFormat.parse(rp.getValue()));
-                        }
-                        }
-                        stmt.setString(paramIndex + 1, value);
-                        paramIndex++;
-                    }
-
-                }
-            }
+            buildPreparedStatementParameterList(reportParams, stmt, rd);
 
             // run the query
             ResultSet rs = null;

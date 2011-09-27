@@ -6,10 +6,11 @@
             title="Reports"
             description="Generate analysis reports using sakai and eportfolio data">
             
-        <category name="course" />
-        <category name="project" />
-       <category name="portfolio" />
+        <!--ONC        <category name="course" />
+        <category name="project" /> -->
+        <category name="portfolio" />
        <category name="portfolioAdmin" />
+       <category name="scs" />
 
         <configuration name="functions.require" value="reports.view" /> 
     </tool> 

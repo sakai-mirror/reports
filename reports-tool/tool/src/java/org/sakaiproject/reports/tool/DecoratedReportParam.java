@@ -207,7 +207,7 @@ public class DecoratedReportParam {
          String strSet = null;
          if(getIsDynamic()) {
             //	run the sql in the report definition parameter value
-            strSet = reportsTool.getReportsManager().generateSQLParameterValue(reportParam);
+            strSet = reportsTool.getReportsManager().generateSQLParameterValue(reportParam, new ArrayList<ReportParam>());
          } else {
             strSet = reportParam.getReportDefinitionParam().getValue();
          }

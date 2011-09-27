@@ -103,7 +103,7 @@ public interface ReportsManager extends DownloadableManager, Job
     * "[(value1; title1), (value2; title2), (value3; title3), ...]"
     * @return String
     */
-   public String generateSQLParameterValue(ReportParam reportParam);
+   public String generateSQLParameterValue(ReportParam reportParam, List<ReportParam> reportParams);
 
 
    /**
