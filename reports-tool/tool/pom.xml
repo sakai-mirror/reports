@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>reports-base</artifactId>
-    <groupId>org.sakaiproject</groupId>
+    <groupId>org.sakaiproject.reports</groupId>
     <version>2.9-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>Reports Tool</name>
-  <groupId>org.sakaiproject</groupId>
-  <artifactId>sakai-reports-tool</artifactId>
+  <groupId>org.sakaiproject.reports</groupId>
+  <artifactId>reports-tool</artifactId>
   <organization>
     <name>sakai</name>
     <url>http://sakaiproject.org/</url>
@@ -33,22 +33,19 @@
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-component-manager</artifactId>
     </dependency>
-<!--
-      This has been relocated to sakai-kernel-util
-      org.sakaiproject.kernel.utilsakai-util-->
     <dependency>
-      <groupId>org.sakaiproject</groupId>
-      <artifactId>sakai-reports-api</artifactId>
-       <version>2.9-SNAPSHOT</version>
+      <groupId>org.sakaiproject.reports</groupId>
+      <artifactId>reports-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
+      <version>${sakai.metaobj.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-tool-lib</artifactId>
-      <version>2.9-SNAPSHOT</version>
+      <version>${sakai.metaobj.version}</version>
       <exclusions>
         <exclusion>
           <groupId>aopalliance</groupId>
@@ -71,10 +68,12 @@
     <dependency>
       <groupId>org.sakaiproject.scheduler</groupId>
       <artifactId>scheduler-component-shared</artifactId>
+      <version>${sakai.scheduler.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.scheduler</groupId>
       <artifactId>scheduler-api</artifactId>
+      <version>${sakai.scheduler.version}</version>
     </dependency>
     <dependency>
       <groupId>quartz</groupId>
@@ -109,15 +108,18 @@
     <dependency>
       <groupId>org.sakaiproject.jsf</groupId>
       <artifactId>jsf-tool</artifactId>
+      <version>${sakai.jsf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.jsf</groupId>
       <artifactId>jsf-app</artifactId>
+      <version>${sakai.jsf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.jsf</groupId>
       <artifactId>jsf-widgets-sun-depend</artifactId>
       <type>pom</type>
+      <version>${sakai.jsf.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

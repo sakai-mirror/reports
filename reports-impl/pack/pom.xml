@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>reports-base</artifactId>
-    <groupId>org.sakaiproject</groupId>
+    <groupId>org.sakaiproject.reports</groupId>
     <version>2.9-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>Reports Components</name>
-  <groupId>org.sakaiproject</groupId>
-  <artifactId>sakai-reports-components</artifactId>
+  <groupId>org.sakaiproject.reports</groupId>
+  <artifactId>reports-components</artifactId>
   <organization>
     <name>sakai</name>
     <url>http://sakaiproject.org/</url>
@@ -24,22 +24,20 @@
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-util</artifactId>
     </dependency>
-<!--
-      This has been relocated to sakai-kernel-util
-      org.sakaiproject.kernel.utilsakai-util-->
     <dependency>
-      <groupId>org.sakaiproject</groupId>
-      <artifactId>sakai-reports-api</artifactId>
-       <version>2.9-SNAPSHOT</version>
+      <groupId>org.sakaiproject.reports</groupId>
+      <artifactId>reports-api</artifactId>
+       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject</groupId>
-      <artifactId>sakai-reports-component-shared</artifactId>
+      <groupId>org.sakaiproject.reports</groupId>
+      <artifactId>reports-component-shared</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-tool-lib</artifactId>
-      <version>2.9-SNAPSHOT</version>
+      <version>${sakai.metaobj.version}</version>
       <exclusions>
         <exclusion>
           <groupId>aopalliance</groupId>
@@ -59,12 +57,10 @@
         </exclusion>
       </exclusions>
     </dependency>
-<!--org.sakaiprojectsakai-util${sakai.version}-->
-<!--org.sakaiprojectsakai-util${sakai.version}-->
     <dependency>
       <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-impl</artifactId>
-      <version>2.9-SNAPSHOT</version>
+      <version>${sakai.metaobj.version}</version>
       <exclusions>
         <exclusion>
           <groupId>aopalliance</groupId>
@@ -84,7 +80,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-<!--org.sakaiprojectsakai-util${sakai.version}-->
   </dependencies>
   <build>
     <resources>

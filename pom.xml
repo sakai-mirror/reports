@@ -3,13 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>pom</packaging>
   <parent>
-    <artifactId>base</artifactId>
-    <groupId>org.sakaiproject</groupId>
-    <version>2.9-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+        <groupId>org.sakaiproject.purepoms</groupId>
+        <artifactId>sakai-standard-tool</artifactId>
+        <version>2.9-SNAPSHOT</version>
+    </parent>
   <name>sakai-reports</name>
-  <groupId>org.sakaiproject</groupId>
+  <groupId>org.sakaiproject.reports</groupId>
   <artifactId>reports-base</artifactId>
   <organization>
     <name>sakai</name>
@@ -27,26 +26,38 @@
     <module>reports-impl/pack</module>
     <module>reports-tool/tool</module>
     <module>reports-util/util</module>
+    <module>reports-assembly/assembly</module>
   </modules>
+  <properties>
+        <url.localsite>scp://source.sakaiproject.org/var/www/html/release/reports/${project.version}</url.localsite>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sakai.jsf.version>2.9-SNAPSHOT</sakai.jsf.version>
+        <sakai.scheduler.version>2.9-SNAPSHOT</sakai.scheduler.version>
+        <sakai.metaobj.version>2.9-SNAPSHOT</sakai.metaobj.version>
+        <sakai.osp.version>2.9-SNAPSHOT</sakai.osp.version>
+        <sakai.taggable.version>2.9-SNAPSHOT</sakai.taggable.version>
+        <sakai.quartz.version>1.6.6</sakai.quartz.version>
+    </properties>
   <build>
     <resources/>
   </build>
   <dependencyManagement>
     <dependencies>
+<!--
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-metaobj-tool-lib</artifactId>
-        <version>2.9-SNAPSHOT</version>
+        <version>${sakai.metaobj.version}</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-metaobj-impl</artifactId>
-        <version>2.9-SNAPSHOT</version>
+        <version>${sakai.metaobj.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-reports-component-shared</artifactId>
-        <version>2.9-SNAPSHOT</version>
+        <groupId>org.sakaiproject.reports</groupId>
+        <artifactId>reports-component-shared</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.jsf</groupId>
@@ -63,6 +74,13 @@
         <groupId>org.sakaiproject.jsf</groupId>
         <artifactId>jsf-tool</artifactId>
         <version>${sakai.jsf.version}</version>
+      </dependency>
+      -->
+      <dependency>
+        <groupId>org.sakaiproject.reports</groupId>
+        <artifactId>reports-api</artifactId>
+        <version>${project.version}</version>
+        <scope>provided</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

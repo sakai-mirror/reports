@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>reports-base</artifactId>
-    <groupId>org.sakaiproject</groupId>
+    <groupId>org.sakaiproject.reports</groupId>
     <version>2.9-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>Reports API</name>
-  <groupId>org.sakaiproject</groupId>
-  <artifactId>sakai-reports-api</artifactId>
+  <groupId>org.sakaiproject.reports</groupId>
+  <artifactId>reports-api</artifactId>
   <organization>
     <name>sakai</name>
     <url>http://sakaiproject.org/</url>
@@ -31,10 +31,8 @@
     <dependency>
       <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
+      <version>${sakai.metaobj.version}</version>
     </dependency>
-<!--org.sakaiprojectsakai-content-api${sakai.version}-->
-<!--org.sakaiprojectsakai-entity-api${sakai.version}-->
-<!--org.sakaiprojectsakai-db-api${sakai.version}-->
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -45,12 +43,10 @@
       <artifactId>commons-digester</artifactId>
       <version>1.6</version>
     </dependency>
-<!--${sakai.spring.groupId}${sakai.spring.artifactId}${sakai.spring.version}-->
-<!--org.sakaiprojectsakai-util-api${sakai.version}-->
     <dependency>
-      <groupId>quartz</groupId>
+      <groupId>org.opensymphony.quartz</groupId>
       <artifactId>quartz</artifactId>
-      <version>1.5.2</version>
+      <version>${sakai.quartz.version}</version>
     </dependency>
     <dependency>
       <groupId>jdom</groupId>
