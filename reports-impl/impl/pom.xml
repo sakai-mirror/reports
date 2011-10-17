@@ -107,14 +107,9 @@
       <version>2.0</version>
     </dependency>
     <dependency>
-      <groupId>jsf</groupId>
-      <artifactId>jsf-api</artifactId>
-      <version>1.1.01</version>
-    </dependency>
-    <dependency>
-      <groupId>jsf</groupId>
-      <artifactId>jsf-impl</artifactId>
-      <version>1.1.01</version>
+      <groupId>org.sakaiproject.jsf</groupId>
+      <artifactId>jsf-app</artifactId>
+      <version>${sakai.jsf.version}</version>
     </dependency>
     <dependency>
       <groupId>jdom</groupId>
