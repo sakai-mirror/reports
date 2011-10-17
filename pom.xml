@@ -43,45 +43,54 @@
   </build>
   <dependencyManagement>
     <dependencies>
-<!--
       <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-metaobj-tool-lib</artifactId>
+        <groupId>org.sakaiproject.metaobj</groupId>
+        <artifactId>sakai-metaobj-api</artifactId>
         <version>${sakai.metaobj.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-metaobj-impl</artifactId>
-        <version>${sakai.metaobj.version}</version>
+        <groupId>org.sakaiproject.osp</groupId>
+        <artifactId>osp-common-api</artifactId>
+        <version>${sakai.osp.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.sakaiproject.reports</groupId>
-        <artifactId>reports-component-shared</artifactId>
-        <version>${project.version}</version>
+        <groupId>org.sakaiproject.osp</groupId>
+        <artifactId>osp-matrix-api</artifactId>
+        <version>${sakai.osp.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-app</artifactId>
-        <version>${sakai.jsf.version}</version>
+        <groupId>org.sakaiproject.taggable</groupId>
+        <artifactId>sakai-taggable-api</artifactId>
+        <version>${sakai.taggable.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-widgets-sun-depend</artifactId>
-        <version>${sakai.jsf.version}</version>
-        <type>pom</type>
+        <groupId>org.sakaiproject.scheduler</groupId>
+        <artifactId>scheduler-api</artifactId>
+        <version>${sakai.scheduler.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
-        <groupId>org.sakaiproject.jsf</groupId>
-        <artifactId>jsf-tool</artifactId>
-        <version>${sakai.jsf.version}</version>
+        <groupId>org.sakaiproject.scheduler</groupId>
+        <artifactId>scheduler-component-shared</artifactId>
+        <version>${sakai.scheduler.version}</version>
+        <scope>provided</scope>
       </dependency>
-      -->
       <dependency>
         <groupId>org.sakaiproject.reports</groupId>
         <artifactId>reports-api</artifactId>
         <version>${project.version}</version>
         <scope>provided</scope>
       </dependency>
+      <dependency>
+         <groupId>org.opensymphony.quartz</groupId>
+         <artifactId>quartz</artifactId>
+         <version>${sakai.quartz.version}</version>
+         <scope>provided</scope>
+    </dependency>
     </dependencies>
   </dependencyManagement>
 </project>

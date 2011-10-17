@@ -47,7 +47,6 @@
     <dependency>
       <groupId>org.sakaiproject.scheduler</groupId>
       <artifactId>scheduler-component-shared</artifactId>
-      <version>${sakai.scheduler.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.reports</groupId>
@@ -66,32 +65,26 @@
     <dependency>
       <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
-      <version>${sakai.metaobj.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.osp</groupId>
       <artifactId>osp-matrix-api</artifactId>
-      <version>${sakai.osp.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.osp</groupId>
       <artifactId>osp-common-api</artifactId>
-      <version>${sakai.osp.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.taggable</groupId>
       <artifactId>sakai-taggable-api</artifactId>
-	  <version>${sakai.taggable.version}</version>
     </dependency>
     <dependency>
-      <groupId>quartz</groupId>
+      <groupId>org.opensymphony.quartz</groupId>
       <artifactId>quartz</artifactId>
-      <version>1.5.2</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.scheduler</groupId>
       <artifactId>scheduler-api</artifactId>
-      <version>${sakai.scheduler.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
