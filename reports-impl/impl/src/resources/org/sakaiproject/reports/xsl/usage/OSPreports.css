@@ -1,0 +1,89 @@
+.reportTable1 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	border: 1px solid #CCCCCC;
+	color: #666666;
+}
+.reportTable1Label1 {
+	background-color: #F4F4F4;
+	width: 40%;
+	border-right: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+.reportTable2Header {
+	background-color: #E5E5E5;
+	border-bottom: 1px solid White;
+	font-weight: bold;
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-bottom: 12px;
+	padding-left: 8px;
+}
+.reportTable2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #666666;
+}
+.reportTable2Labels {
+	font-weight: bold;
+	background-color: #F4F4F4;
+	width: 20%;
+}
+.reportTable2Data {
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #E5E5E5;
+}
+.reportTable2Footer {
+	font-weight: bold;
+	border-bottom-width: medium;
+	border-bottom-style: solid;
+	border-bottom-color: #F4F4F4;
+}
+.reportTable1Data1 {
+	padding-left: 20px;
+	vertical-align: top;
+	border-bottom: 1px solid #CCCCCC;
+	line-height: 18px;
+}
+.reportTable2Labels2 {
+
+	font-weight: bold;
+	background-color: #F4F4F4;
+}
+.reportTable1Label2 {
+	background-color: #F4F4F4;
+	width: 40%;
+	border-right: 1px solid #CCCCCC;
+	vertical-align: top;
+}
+.reportTable1Data2 {
+	padding-left: 20px;
+	vertical-align: top;
+	line-height: 18px;
+}
+.reportTableLabelEmphasis {
+	font-weight: bold;
+}
+.reportData1 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #666666;
+}
+.reportInfo {
+	color: #999999;
+}
+.reportTableDataEmphasis {
+
+	font-weight: bold;
+}
+.reportTable1 a, .reportTable1 a:link {
+	color: #6699CC;
+	padding-left: 5px;
+}

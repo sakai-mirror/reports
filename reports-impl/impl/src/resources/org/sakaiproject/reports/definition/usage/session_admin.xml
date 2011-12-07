@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	Notes:
+
+	Each report MUST have a different idString.  This is how saved reports are
+	linked back to the report definition
+
+    ALL YOUR BASE ARE BELONG TO US!
+-->
+<beans>
+
+
+    <bean id="sessionAdminReport"
+        class="org.sakaiproject.reports.model.ReportDefinition">
+
+        <property name="idString">
+            <value>sessionAdmin-000-111-222</value>
+        </property>
+        <property name="usesWarehouse"><value>true</value></property>
+        <property name="title">
+            <value>
+                Session Report
+            </value>
+        </property>
+       <property name="query">
+            <list>
+               <value>
+                  <![CDATA[select count(*) "totalVisits" from dw_session where startTime between ? and ?  ]]>
+               </value>
+                 <value>
+                  <![CDATA[select count(distinct userId) "uniqueVisits" from dw_session  where startTime between ? and ?    ]]>
+               </value>
+               <value>
+                   <![CDATA[select avg(durationSeconds) "avgSessionInSeconds"  from dw_session  where startTime between ? and ?  ]]>
+               </value>
+               <value>
+                   <![CDATA[select Distinct(user_eid), first_name, last_name from dw_users
+                   where user_id not  in (select distinct userId from dw_session where startTime between ? and ?)
+                    ]]>
+               </value>
+            </list>
+        </property>
+        <property name="vendorQuery">
+             <map>
+                <entry key="oracle">
+                    <list>
+               <value>
+                  <![CDATA[select count(*) "totalVisits" from dw_session where startTime between to_date(?) and to_date(?)  ]]>
+               </value>
+                 <value>
+                  <![CDATA[select count(distinct userId) "uniqueVisits" from dw_session  where startTime between to_date(?) and to_date(?)    ]]>
+               </value>
+               <value>
+                   <![CDATA[select avg(durationSeconds) "avgSessionInSeconds"  from dw_session  where startTime between to_date(?) and to_date(?)  ]]>
+               </value>
+               <value>
+                   <![CDATA[select Distinct(user_eid), first_name, last_name from dw_users
+                   where user_id not  in (select distinct userId from dw_session where startTime between to_date(?) and to_date(?))
+                    ]]>
+               </value>
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <property name="description">
+            <value>
+                Session report
+            </value>
+        </property>
+        <property name="siteType"><!-- some acceptable values: admin,course,project,cig  -->
+            <value>~admin,!admin, portfolioAdmin</value>
+        </property>
+        <property name="role">
+            <value>maintain,admin, Program Admin</value>
+        </property>
+         <property name="paramTitle">
+            <value>
+                Select the following options:
+            </value>
+        </property>
+
+        <property name="reportDefinitionParams">
+            <list>
+                <bean class="org.sakaiproject.reports.model.ReportDefinitionParam">
+                    <property name="title"><value>Start Date:</value></property>
+                    <property name="paramName"><value>startdate</value></property>
+                    <property name="description"><value></value></property>
+                    <property name="type"><value>date</value></property>
+                    <property name="valueType"><value>fillin</value></property>
+                    <property name="value"><value></value></property>
+                </bean>
+                <bean class="org.sakaiproject.reports.model.ReportDefinitionParam">
+                    <property name="title"><value>End Date:</value></property>
+                    <property name="paramName"><value>enddate</value></property>
+                    <property name="description"><value></value></property>
+                    <property name="type"><value>date</value></property>
+                    <property name="valueType"><value>fillin</value></property>
+                    <property name="value"><value></value></property>
+                </bean>
+            </list>
+        </property>
+
+        <property name="xsls">
+            <list>
+                <bean id="sessionReport" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/sessionReport.xsl</value></property>
+                    <property name="title"><value>Session Report</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+                 <bean id="defaultExport" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="title"><value>CSV</value></property>
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/shared/defaultExport.xsl</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="extension"><value>csv</value></property>
+                    <property name="target"><value>_self</value></property>
+                    <property name="contentType"><value>application/x-csv</value></property>
+                    <property name="resultsPostProcessor">
+                        <ref bean="org.sakaiproject.reports.service.ResultsPostProcessor.csv"/>
+                    </property>
+                </bean>
+                <bean id="exportHTML" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/sessionReport.xsl</value></property>
+                    <property name="title"><value>HTML</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="contentType"><value>text/html</value></property>
+                </bean>
+
+            </list>
+           
+        </property>
+
+        <property name="defaultXsl">
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/sessionReport.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+        </property>
+
+    </bean>
+    </beans>

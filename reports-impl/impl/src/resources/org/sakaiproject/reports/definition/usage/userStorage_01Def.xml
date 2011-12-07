@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	Notes:
+
+	Each report MUST have a different idString.  This is how saved reports are
+	linked back to the report definition
+
+    ALL YOUR BASE ARE BELONG TO US!
+-->
+<beans>
+
+
+    <bean id="userStorage-01"
+        class="org.sakaiproject.reports.model.ReportDefinition">
+
+        <property name="idString">
+            <value>userStorage-01</value>
+        </property>
+        <property name="usesWarehouse"><value>true</value></property>
+        <property name="title">
+            <value>
+                User Storage Report
+            </value>
+        </property>
+       <property name="query">
+            <list>
+               <value>
+                  <![CDATA[select dw_users.user_eid,  dw_users.first_name, dw_users.last_name, created_by, work_space_used, site_space_used, (work_space_used +  site_space_used)
+                   FROM (SELECT created_by, space_used as work_space_used  from dw_resource_collection where parent_collection = '/user/' )  work_space,
+                   (SELECT sum(space_used) as site_space_used  from dw_resource_collection where parent_collection = '/group/' )  site_space,
+                   dw_users
+                   where dw_users.user_id = created_by and ((work_space_used + site_space_used) /1024) > ?
+                   ]]>
+               </value>
+            </list>
+        </property>
+        <property name="description">
+            <value>
+                Allows you to specify size and view users who have used more than that amount of space
+            </value>
+        </property>
+        <property name="siteType"><!-- some acceptable values: admin,course,project,cig  -->
+            <value>~admin,!admin,portfolioAdmin</value>
+        </property>
+        <property name="role">
+            <value>maintain,admin, Program Admin</value>
+        </property>
+         <property name="paramTitle">
+            <value>
+                Find users storing more than:
+            </value>
+        </property>
+        <property name="paramInstruction">
+            <value>
+                Warning! This may be a large report that will require a lengthy download period.
+            </value>
+        </property>
+        <property name="reportDefinitionParams">
+            <list>
+                <bean class="org.sakaiproject.reports.model.ReportDefinitionParam">
+                    <property name="title"><value>MB</value></property>
+                    <property name="paramName"><value>size</value></property>
+                    <property name="description"><value>Finds users storing more than specified amount.  May be large report.</value></property>
+                    <property name="type"><value>int</value></property>
+                                    <!-- int/float/date/string -->
+                    <property name="valueType"><value>fillin</value></property>
+                                    <!-- fillin/set/multiset/sql/multisql/static -->
+                    <property name="value"><value></value></property>
+                           
+                </bean>
+            </list>
+        </property>
+
+        <property name="xsls">
+            <list>
+                <bean id="userStorage" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/userStorage.xsl</value></property>
+                    <property name="title"><value>User Storage</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+                 <bean id="defaultExport" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="title"><value>CSV</value></property>
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/shared/defaultExport.xsl</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="extension"><value>csv</value></property>
+                    <property name="target"><value>_self</value></property>
+                    <property name="contentType"><value>application/x-csv</value></property>
+                    <property name="resultsPostProcessor">
+                        <ref bean="org.sakaiproject.reports.service.ResultsPostProcessor.csv"/>
+                    </property>
+                </bean>
+                <bean id="exportHTML" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/userStorage.xsl</value></property>
+                    <property name="title"><value>HTML</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="contentType"><value>text/html</value></property>
+                </bean>
+            </list>
+
+        </property>
+
+        <property name="defaultXsl">
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/userStorage.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+        </property>
+
+    </bean>
+    </beans>

@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<!DOCTYPE faces-config PUBLIC
+        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+
+<faces-config>
+
+    <application>
+        <message-bundle>org.sakaiproject.reports.bundle.Messages</message-bundle>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <!--
+           <supported-locale>de</supported-locale>
+           <supported-locale>fr</supported-locale>
+           <supported-locale>es</supported-locale> -->
+        </locale-config>
+    </application>
+
+    <!--sakai2 - take this out. <application>
+     <view-handler>
+       org.sakaiproject.jsf.custom.SakaiViewHandler
+     </view-handler>
+     <navigation-handler>
+       org.sakaiproject.jsf.custom.SakaiNavigationHandler
+     </navigation-handler>
+     <variable-resolver>
+       org.sakaiproject.jsf.custom.SakaiVariableResolver
+     </variable-resolver>
+     <state-manager>
+       org.sakaiproject.jsf.custom.SakaiStateManager
+     </state-manager>
+   </application> -->
+
+    <!-- =================== Tool Beans ============== -->
+    <managed-bean>
+
+        <description>ReportsTool</description>
+        <managed-bean-name>ReportsTool</managed-bean-name>
+        <managed-bean-class>org.sakaiproject.reports.tool.ReportsTool</managed-bean-class>
+        <!--sakai2      <managed-bean-scope>request</managed-bean-scope>-->
+        <managed-bean-scope>session</managed-bean-scope>
+
+        <managed-property>
+            <description>reportsManager</description>
+            <property-name>reportsManager</property-name>
+            <value>#{Components["org.sakaiproject.reports.service.ReportsManager"]}</value>
+        </managed-property>
+
+        <managed-property>
+            <description>Service Dependency: schedulerManager</description>
+            <property-name>schedulerManager</property-name>
+            <value>#{Components["org.sakaiproject.api.app.scheduler.SchedulerManager"]}</value>
+        </managed-property>
+        <managed-property>
+            <description>Service Dependency: contentHosting</description>
+            <property-name>contentHosting</property-name>
+            <value>#{Components["org.sakaiproject.content.api.ContentHostingService"]}</value>
+        </managed-property>
+
+        <managed-property>
+            <description>Service Dependency: idManager</description>
+            <property-name>idManager</property-name>
+            <value>#{Components["idManager"]}</value>
+        </managed-property>
+    </managed-bean>
+
+    <navigation-rule>
+        <from-view-id>/reports/main.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>processCreateReport</from-outcome>
+            <to-view-id>/reports/createReport.jsp</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>processCreateReportParams</from-outcome>
+            <to-view-id>/reports/createReportParams.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>showReportResults</from-outcome>
+            <to-view-id>/reports/reviewResults.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>importReportDef</from-outcome>
+            <to-view-id>/reports/importReportDef.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>scheduleReport</from-outcome>
+            <to-view-id>/reports/scheduleReport.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/reports/createReport.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>processCreateReportParams</from-outcome>
+            <to-view-id>/reports/createReportParams.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>showReportResults</from-outcome>
+            <to-view-id>/reports/reviewResults.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/reports/importReportDef.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/reports/createReportParams.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>processCreateReport</from-outcome>
+            <to-view-id>/reports/createReport.jsp</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>showReportResults</from-outcome>
+            <to-view-id>/reports/reviewResults.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/reports/reviewResults.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>saveReportResults</from-outcome>
+            <to-view-id>/reports/saveResults.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/reports/saveResults.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>showReportResults</from-outcome>
+            <to-view-id>/reports/reviewResults.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/reports/scheduleReport.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>createTrigger</from-outcome>
+            <to-view-id>/reports/createTrigger.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>deleteTriggers</from-outcome>
+            <to-view-id>/reports/deleteTriggers.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+         <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/reports/createTrigger.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>scheduleReport</from-outcome>
+            <to-view-id>/reports/scheduleReport.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/reports/deleteTriggers.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>main</from-outcome>
+            <to-view-id>/reports/main.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>scheduleReport</from-outcome>
+            <to-view-id>/reports/scheduleReport.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>createTrigger</from-outcome>
+            <to-view-id>/reports/createTrigger.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <managed-bean>
+        <description>
+            Dynamic Resource Bundle Loader
+        </description>
+        <managed-bean-name>msgs</managed-bean-name>
+        <managed-bean-class>org.sakaiproject.util.ResourceLoader</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <description>Bundle baseName</description>
+            <property-name>baseName</property-name>
+            <value>org.sakaiproject.reports.bundle.Messages</value>
+        </managed-property>
+    </managed-bean>
+
+
+</faces-config>

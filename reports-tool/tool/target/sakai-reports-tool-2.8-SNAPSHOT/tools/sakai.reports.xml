@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<registration>
+    <tool
+            id="sakai.reports"
+            title="Reports"
+            description="Generate analysis reports using sakai and eportfolio data">
+            
+<!--ONC        <category name="course" />
+        <category name="project" /> -->
+       <category name="portfolio" />
+       <category name="portfolioAdmin" />
+       <category name="scs" />
+
+        <configuration name="functions.require" value="reports.view" /> 
+    </tool> 
+</registration>

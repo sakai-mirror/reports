@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	Notes:
+
+	Each report MUST have a different idString.  This is how saved reports are
+	linked back to the report definition
+
+    ALL YOUR BASE ARE BELONG TO US!
+-->
+<beans>
+
+
+    <bean id="totalStorageReport"
+        class="org.sakaiproject.reports.model.ReportDefinition">
+
+        <property name="idString">
+            <value>totalStorageReport-01</value>
+        </property>
+        <property name="usesWarehouse"><value>true</value></property>
+        <property name="title">
+            <value>
+                Current storage in system
+            </value>
+        </property>
+       <property name="query">
+            <list>
+               <value>
+                  <![CDATA[select avg(file_count),  avg(avg_size), avg(avg_space)
+                   from ( select  created_by, avg(content_length/1024) as avg_size from dw_resource group by created_by) avg_size,
+                   ( select  created_by, sum(content_length/2024) as avg_space from dw_resource group by created_by) avg_space,
+                   ( select  created_by, count(*) as file_count  from dw_resource group by created_by) file_count
+                    ]]>
+               </value>
+
+               <value>
+                 <![CDATA[select sub_mime_type "file_type", count(*) "total_files" ,
+                 avg(content_length/1024) "avg_size" , sum(content_length/1024) "total_size"
+                 from dw_resource  group by sub_mime_type
+                  ]]>
+               </value>
+               <value>
+                   <![CDATA[select sum(space_available) "totalAlocatedSpace"
+                   from dw_resource_collection where parent_collection = '/'
+                    ]]>
+               </value>
+            </list>
+        </property>
+        <property name="description">
+            <value>
+                Reports on current storage in system
+            </value>
+        </property>
+        <property name="siteType"><!-- some acceptable values: admin,course,project,cig  -->
+            <value>~admin,!admin, portfolioAdmin</value>
+        </property>
+        <property name="role">
+            <value>maintain,admin, Program Admin</value>
+        </property>
+        <property name="reportDefinitionParams">
+            <list>
+
+            </list>
+        </property>
+
+         <property name="xsls">
+            <list>
+                <bean id="currentStorage" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/currentStorage.xsl</value></property>
+                    <property name="title"><value>Current Storage</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+                 <bean id="defaultExport" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="title"><value>CSV</value></property>
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/shared/defaultExport.xsl</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="extension"><value>csv</value></property>
+                    <property name="target"><value>_self</value></property>
+                    <property name="contentType"><value>application/x-csv</value></property>
+                    <property name="resultsPostProcessor">
+                        <ref bean="org.sakaiproject.reports.service.ResultsPostProcessor.csv"/>
+                    </property>
+                </bean>
+                <bean id="exportHTML" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/currentStorage.xsl</value></property>
+                    <property name="title"><value>HTML</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="contentType"><value>text/html</value></property>
+                </bean>
+            </list>
+
+        </property>
+
+        <property name="defaultXsl">
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/currentStorage.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+        </property>
+
+    </bean>
+    </beans>

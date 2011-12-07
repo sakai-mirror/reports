@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--
+	Notes:
+
+	Each report MUST have a different idString.  This is how saved reports are
+	linked back to the report definition
+
+    ALL YOUR BASE ARE BELONG TO US!
+-->
+<beans>
+
+
+    <bean id="userStorageByUserId-01"
+        class="org.sakaiproject.reports.model.ReportDefinition">
+
+        <property name="idString">
+            <value>userStorageByUserId-01</value>
+        </property>
+        <property name="usesWarehouse"><value>true</value></property>
+        <property name="title">
+            <value>
+                User Storage Details Report
+            </value>
+        </property>
+       <property name="query">
+            <list>
+                <value>
+                    <![CDATA[
+                 select user_eid, first_name, last_name from dw_users where user_eid = ?
+                    ]]>
+                </value>
+               <value>
+                   <![CDATA[
+                 select sub_mime_type "file_type", count(*) "total_files" , avg(content_length) "avg_size" , sum(content_length) "total_size"
+                   from dw_resource where created_by = (select dw_users.user_id from dw_users
+                   where dw_users.user_eid = ? ) and parent_collection  like '/user/%'  group by sub_mime_type
+                   ]]>
+               </value>
+                <value>
+                    <![CDATA[
+                  select sub_mime_type "file_type", count(*) "total_files" , avg(content_length) "avg_size" , sum(content_length) "total_size"
+                    from dw_resource where created_by = (select dw_users.user_id from dw_users
+                    where dw_users.user_eid = ? ) and parent_collection  like '/group/%'  group by sub_mime_type
+                    ]]>
+               </value>
+                <value>
+                    <![CDATA[
+                    select space_available  "workspaceTotalAllocatedSpace" from dw_resource_collection
+                    where  created_by=?  and uri= '/user/'
+                    ]]>
+                </value>
+                <value>
+                    <![CDATA[
+                    select sum(space_available)  "siteTotalAllocatedSpace" from dw_resource_collection
+                    where uri in (select distinct parent_collection from dw_resource  where created_by = ?)
+                    ]]>
+                </value>
+            </list>
+        </property>
+        <property name="description">
+            <value>
+                View space used by specified user id
+            </value>
+        </property>
+        <property name="siteType"><!-- some acceptable values: admin,course,project,cig  -->
+            <value>~admin,!admin,portfolioAdmin</value>
+        </property>
+        <property name="role">
+            <value>maintain,admin, Program Admin</value>
+        </property>
+         <property name="paramTitle">
+            <value>
+                Specify a User ID:
+            </value>
+        </property>
+        
+        <property name="reportDefinitionParams">
+            <list>
+               <bean class="org.sakaiproject.reports.model.ReportDefinitionParam">
+                    <property name="title"><value>User Id</value></property>
+                    <property name="paramName"><value>userId</value></property>
+                    <property name="description"><value>User Id</value></property>
+                    <property name="type"><value>string</value></property>
+                                    <!-- int/float/date/string -->
+                    <property name="valueType"><value>fillin</value></property>
+                                    <!-- fillin/set/multiset/sql/multisql/static -->
+                    <property name="value"><value></value></property>
+
+                </bean>
+            </list>
+        </property>
+
+         <property name="xsls">
+            <list>
+                <bean id="userStorageDetails" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/userStorageDetails.xsl</value></property>
+                    <property name="title"><value>User Storage Details</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+                 <bean id="defaultExport" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="title"><value>CSV</value></property>
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/shared/defaultExport.xsl</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="extension"><value>csv</value></property>
+                    <property name="target"><value>_self</value></property>
+                    <property name="contentType"><value>application/x-csv</value></property>
+                    <property name="resultsPostProcessor">
+                        <ref bean="org.sakaiproject.reports.service.ResultsPostProcessor.csv"/>
+                    </property>
+                </bean>
+                <bean id="exportHTML" class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/userStorageDetails.xsl</value></property>
+                    <property name="title"><value>HTML</value></property>
+                    <property name="isExport"><value>true</value></property>
+                    <property name="contentType"><value>text/html</value></property>
+                </bean>
+            </list>
+
+        </property>
+
+        <property name="defaultXsl">
+                <bean class="org.sakaiproject.reports.model.ReportXsl">
+                    <property name="xslLink"><value>/org/sakaiproject/reports/xsl/usage/userStorageDetails.xsl</value></property>
+                    <property name="isExport"><value>false</value></property>
+                </bean>
+        </property>
+
+    </bean>
+    </beans>

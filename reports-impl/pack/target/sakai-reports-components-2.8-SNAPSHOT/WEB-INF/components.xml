@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+    <bean id="org.sakaiproject.reports.ReportsHibernateBean"
+        class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+        <property name="mappingResources">
+            <list>
+                <value>
+                    org/sakaiproject/reports/model/hbm/ReportsImpl.hbm.xml
+                </value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="org.sakaiproject.reports.service.ReportsManager"
+        class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+        </property>
+        <property name="target">
+             <ref bean="org.sakaiproject.reports.logic.impl.ReportsManagerImpl" />
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+    <bean       id ="org.sakaiproject.reports.logic.impl.ReportsManagerImpl"
+                class="org.sakaiproject.reports.logic.impl.ReportsManagerImpl"
+                singleton="true" init-method="init">
+
+                <property name="sessionFactory">
+                    <ref
+                        bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
+                </property>
+               <property name="securityService">
+                  <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+               </property>
+               <property name="idManager">
+                   <ref bean="idManager" />
+               </property>
+                 <property name="contentHosting">
+                   <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
+                </property>
+               <property name="authzManager">
+                  <ref bean="org.sakaiproject.metaobj.security.AuthorizationFacade"/>
+               </property>
+               <property name="authnManager"><ref bean="authManager"/></property>
+               <!-- leave the dataSource blank and it will automatically default to the Data warehouse data source. -->
+               <!-- by filling in the dataSource it will use that for the alternative dataSource. -->
+               <!-- if the datawarehouse isn't being deployed, then either this needs to be filled in or
+               			if the dataSource is null thus defaulting to the DW datasource which isn't there
+               			which then the code will default to the sakai data source -->
+               <!--
+                <property name="dataSource">
+   			        <ref bean="org.sakaiproject.warehouse.service.DataWarehouseManager.dataSource" />
+                </property>
+                -->
+                <property name="sakaiDataSource">
+   			        <ref bean="javax.sql.DataSource"/>
+                </property>
+                <property name="forceColumnLabelUppercase">
+                	<value>true</value>
+                	<!-- <value>false</value> -->
+                </property>
+                <property name="schedulerManager">
+                    <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager"/>
+                </property>
+                <property name="jobBeanWrapper">
+                    <ref bean="org.sakaiproject.api.app.scheduler.JobBeanWrapper.reports"/>
+                </property>
+                <property name="definedDefintions">
+                    <list>
+                        <bean class="org.sakaiproject.reports.logic.impl.ReportsDefinitionWrapper">
+                            <property name="idValue">
+                                <value>totalStorageReport-01</value>
+                            </property>
+                            <property name="beanId">
+                                <value>totalStorageReport-01</value>
+                            </property>
+                            <property name="definitionFileLocation">
+                                <value>/org/sakaiproject/reports/definition/usage/totalStorageReportDef.xml</value>
+                            </property>
+                         </bean>
+                        <bean class="org.sakaiproject.reports.logic.impl.ReportsDefinitionWrapper">
+                            <property name="idValue">
+                                <value>userStorage-01</value>
+                            </property>
+                            <property name="beanId">
+                                <value>userStorage-01</value>
+                            </property>
+                            <property name="definitionFileLocation">
+                                <value>/org/sakaiproject/reports/definition/usage/userStorage_01Def.xml</value>
+                            </property>
+                         </bean>
+                       <bean class="org.sakaiproject.reports.logic.impl.ReportsDefinitionWrapper">
+                            <property name="idValue">
+                                <value>userStorageByUserId-01</value>
+                            </property>
+                            <property name="beanId">
+                                <value>userStorageByUserId-01</value>
+                            </property>
+                            <property name="definitionFileLocation">
+                                <value>/org/sakaiproject/reports/definition/usage/userStorageByUserId.xml</value>
+                            </property>
+                         </bean>
+                         
+                         <bean class="org.sakaiproject.reports.logic.impl.ReportsDefinitionWrapper">
+                            <property name="idValue">
+                                <value>sessionAdmin-000-111-222</value>
+                            </property>
+                            <property name="beanId">
+                                <value>sessionAdminReport</value>
+                            </property>
+                            <property name="definitionFileLocation">
+                                <value>/org/sakaiproject/reports/definition/usage/session_admin.xml</value>
+                            </property>
+                         </bean>           
+                    </list>
+                </property>
+               <property name="autoDdl"><value>${auto.ddl}</value></property>
+            </bean>
+   <bean id="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifactReports"
+      parent="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifact"
+      class="org.sakaiproject.metaobj.shared.mgt.ContentWrappedArtifactFinder" />
+
+   <bean id="org.sakaiproject.metaobj.shared.ArtifactFinderManager.reports"
+      class="org.sakaiproject.metaobj.shared.mgt.WrappedArtifactFinderManager">
+      <property name="base">
+         <ref bean="artifactFinderManager"/>
+      </property>
+      <property name="substitutions">
+         <map>
+            <entry key="fileArtifact">
+               <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinder.fileArtifactReports" />
+            </entry>
+         </map>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.reports.service.ResultProcessor.defaultArtifactLoader"
+      class="org.sakaiproject.reports.logic.impl.LoadArtifactResultProcessor">
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="artifactFinderManager">
+         <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinderManager.reports" />
+      </property>
+      <property name="securityService">
+         <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      </property>
+      <property name="reportsManager">
+         <ref bean="org.sakaiproject.reports.service.ReportsManager"/>
+      </property>
+      <property name="contentHosting">
+      	<ref bean="org.sakaiproject.content.api.ContentHostingService" />
+      </property>
+      <property name="columnNamePattern">
+      	<value>.*_(artifact|ARTIFACT)$</value>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.reports.service.ResultProcessor.resourceIdArtifactLoader"
+      class="org.sakaiproject.reports.logic.impl.LoadArtifactByIdResultProcessor">
+      <property name="idManager"><ref bean="idManager"/></property>
+      <property name="artifactFinderManager">
+         <ref bean="org.sakaiproject.metaobj.shared.ArtifactFinderManager.reports" />
+      </property>
+      <property name="securityService">
+         <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      </property>
+      <property name="reportsManager">
+         <ref bean="org.sakaiproject.reports.service.ReportsManager"/>
+      </property>
+      <property name="columnNamePattern">
+      	<value>.*_(idartifact|IDARTIFACT)$</value>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.reports.service.ResultProcessor.defaultDisplayNameLoader"
+      class="org.sakaiproject.reports.logic.impl.LoadDisplayNamesProcessor">
+      <property name="securityService">
+         <ref bean="org.sakaiproject.authz.api.SecurityService"/>
+      </property>
+      <property name="contentHosting">
+         <ref bean="org.sakaiproject.content.api.ContentHostingService" />
+      </property>
+      <property name="columnNamePattern">
+      	<value>.*_(displayname|DISPLAYNAME)$</value>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.reports.service.ResultProcessor.defaultSiteUserLoader"
+      class="org.sakaiproject.reports.logic.impl.LoadSiteUserProcessor">
+      <property name="columnNamePattern">
+      	<value>.*_(siteuser|SITEUSER)$</value>
+      </property>
+      <property name="siteCache">
+      	<ref bean="org.sakaiproject.reports.siteCache"/>
+      </property>
+      <property name="userCache">
+      	<ref bean="org.sakaiproject.reports.userCache"/>
+      </property>
+   </bean>
+   
+   <bean id="org.sakaiproject.entity.api.HttpAccess.reports"
+      class="org.sakaiproject.reports.logic.impl.ReportsHttpAccess">
+      <property name="reportsManager">
+         <ref bean="org.sakaiproject.reports.service.ReportsManager"/>
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.entity.api.EntityProducer.reports"
+      class="org.sakaiproject.reports.logic.impl.ReportsEntityProducer"
+      init-method="init"
+		destroy-method="destroy"
+		singleton="true">
+      <property name="entityManager">
+         <ref bean="org.sakaiproject.entity.api.EntityManager"/>
+      </property>
+      <property name="httpAccess">
+         <ref bean="org.sakaiproject.entity.api.HttpAccess.reports" />
+      </property>
+   </bean>
+
+   <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.csv"
+      class="org.sakaiproject.reports.logic.impl.CsvResultPostProcessor" />
+      
+   <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.csvAdvanced"
+      class="org.sakaiproject.reports.logic.impl.CsvAdvancedResultPostProcessor" />
+
+              <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumn"
+                 class="org.sakaiproject.reports.logic.impl.GroupingResultProcessor">
+                    <property name="grouping">
+                       <list>
+                          <value>criterion_sequence</value>
+                          <value>level_sequence</value>
+                          <value>userId</value>
+                       </list>
+                    </property>
+              </bean>
+              <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumneval"
+                 class="org.sakaiproject.reports.logic.impl.GroupingResultProcessor">
+                    <property name="grouping">
+                       <list>
+                          <value>criterion_sequence</value>
+                          <value>level_sequence</value>
+                          <value>userId</value>
+                          <value>evaluators</value>
+                       </list>
+                    </property>
+              </bean>
+              <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumnupper"
+                 class="org.sakaiproject.reports.logic.impl.GroupingResultProcessor">
+                    <property name="grouping">
+                       <list>
+                          <value>CRITERION_SEQUENCE</value>
+                          <value>LEVEL_SEQUENCE</value>
+                          <value>USERID</value>
+                       </list>
+                    </property>
+              </bean>
+              <bean id="org.sakaiproject.reports.service.ResultsPostProcessor.rowcolumnevalupper"
+                 class="org.sakaiproject.reports.logic.impl.GroupingResultProcessor">
+                    <property name="grouping">
+                       <list>
+                          <value>CRITERION_SEQUENCE</value>
+                          <value>LEVEL_SEQUENCE</value>
+                          <value>USERID</value>
+                          <value>EVALUATORS</value>
+                       </list>
+                    </property>
+              </bean>
+
+	<bean
+		id="org.sakaiproject.reports.service.ResultProcessor.defaultActivityLoader"
+		class="org.sakaiproject.reports.logic.impl.ActivityPostProcessor">
+		<property name="columnNamePattern">
+			<value>.*_(activity|ACTIVITY)$</value>
+		</property>
+		<property name="siteCache">
+      		<ref bean="org.sakaiproject.reports.siteCache"/>
+		</property>
+		<property name="taggingManager">
+			<ref bean="org.sakaiproject.taggable.api.TaggingManager"/>
+		</property>
+		<property name="provider">
+			<ref bean="org.theospi.portfolio.tagging.impl.MatrixTaggingProvider"/>
+		</property>
+	</bean>
+	
+	<bean
+		id="org.sakaiproject.reports.service.ResultProcessor.defaultCriteriaRefLoader"
+		class="org.sakaiproject.reports.logic.impl.CriteriaPostProcessor">
+		<property name="columnNamePattern">
+			<value>.*_(criteriaref|CRITERIAREF)$</value>
+		</property>
+		<property name="idManager">
+   			<ref bean="idManager" />
+   		</property>
+   		<property name="matrixManager">
+   			<ref bean="matrixManager" />
+   		</property>
+	</bean>
+              
+   <bean id="org.sakaiproject.reports.logic.impl.WizardPageDefReferenceParameterProcessor" 
+   		class="org.sakaiproject.reports.logic.impl.WizardPageDefReferenceParameterProcessor">
+   		<property name="idManager">
+   			<ref bean="idManager" />
+   		</property>
+   		<property name="matrixManager">
+   			<ref bean="matrixManager" />
+   		</property>
+   </bean>
+
+   <bean id="org.sakaiproject.reports.service.ReportFunctions.REPORT_FUNCTION_CREATE"
+      class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+   <bean id="org.sakaiproject.reports.service.ReportFunctions.REPORT_FUNCTION_RUN"
+      class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+   <bean id="org.sakaiproject.reports.service.ReportFunctions.REPORT_FUNCTION_VIEW"
+      class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+   <bean id="org.sakaiproject.reports.service.ReportFunctions.REPORT_FUNCTION_EDIT"
+      class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+   <bean id="org.sakaiproject.reports.service.ReportFunctions.REPORT_FUNCTION_DELETE"
+      class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+
+     <bean id="org.sakaiproject.content.api.ContentResourceFilter.reportImportFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+        <property name="viewAll">
+            <value>true</value>
+        </property>
+      <property name="mimeTypes">
+         <list>
+           <value>text/xml</value>
+           <value>application/xml</value>
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>xml</value>
+         </list>
+      </property>
+   </bean>
+  <bean id="org.sakaiproject.content.api.ContentResourceFilter.reportXslFile"
+      parent="org.sakaiproject.content.api.ContentResourceFilter.base">
+      <property name="viewAll">
+         <value>true</value>
+      </property>
+      <property name="mimeTypes">
+         <list>
+            <value>text/xml</value>
+         </list>
+      </property>
+      <property name="acceptedExtensions">
+         <list>
+            <value>xsl</value>
+         </list>
+      </property>
+   </bean>
+
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.reports"
+          class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+          singleton="true">
+        <property name="beanId">
+            <value>org.sakaiproject.reports.service.ReportsManager</value>
+        </property>
+        <property name="jobName">
+            <value>Report</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager"/>
+        </property>
+    </bean>
+
+	<bean id="org.sakaiproject.reports.siteCache"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>org.sakaiproject.reports.siteCache</value>
+		</property>
+		<property name="maxElementsInMemory"><value>500</value></property>
+		<property name="diskPersistent"><value>false</value></property>
+		<property name="eternal"><value>false</value></property>
+		<property name="timeToLive"><value>60</value></property>
+		<property name="timeToIdle"><value>10</value></property>
+	</bean>
+	
+	<bean id="org.sakaiproject.reports.userCache"
+		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager" />
+		</property>
+		<property name="cacheName">
+			<value>org.sakaiproject.reports.userCache</value>
+		</property>
+		<property name="maxElementsInMemory"><value>10000</value></property>
+		<property name="diskPersistent"><value>false</value></property>
+		<property name="eternal"><value>false</value></property>
+		<property name="timeToLive"><value>60</value></property>
+		<property name="timeToIdle"><value>10</value></property>
+	</bean>
+    
+</beans
+
+>

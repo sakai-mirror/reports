@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.sakaiproject.reports.model" default-lazy="false" >
+
+    <class name="ReportDefinitionXmlFile"
+           table="reports_def_xml" >
+
+        <id name="reportDefId" length="255" type="java.lang.String" column="reportDefId"/>
+        <property name="xmlFile" column="xmlFile" type="binary" not-null="true" length="2147483647"/>
+        <set name="reportXslFiles" table="report_xsl_file">
+            <key column="reportDefId" />
+            <composite-element class="ReportXslFile">
+             <property name="reportXslFileRef" length="255" type="java.lang.String" column="reportXslFileRef"/>
+             <property name="xslFile" column="xslFile" type="binary" length="2147483647"/>
+             <property name="xslFileHash" column="xslFileHash" type="java.lang.String" not-null="true" length="50" />
+            </composite-element>
+        </set>
+    </class>
+
+    <class
+        name="Report"
+        table="reports_report">
+        
+        <id name="reportId" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="reportId">
+            <generator class="org.sakaiproject.metaobj.shared.IdGenerator" />
+        </id>
+        
+        <!--  <many-to-one name="reportDefinition" column="reportDefId"
+            class="ReportDefinition" cascade="delete" /> -->
+        <property name="reportDefIdMark" type="java.lang.String" />
+            
+        <property name="userId" type="java.lang.String" />
+        <property name="title" type="java.lang.String" />
+        <property name="keywords" type="java.lang.String" />
+        <property name="description" type="java.lang.String" />
+        <property name="isLive" type="boolean" />
+        <property name="creationDate" type="java.util.Date" />
+        <property name="type" type="java.lang.String" />
+        <property name="display" type="boolean" />
+        
+        <bag name="reportParams" cascade="all" inverse="true">
+            <key column="reportId" />
+            <one-to-many class="ReportParam" />
+        </bag>
+    </class>
+    
+    <class
+        name="ReportParam"
+        table="reports_param">
+        
+        <id name="paramId" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="paramId">
+            <generator class="org.sakaiproject.metaobj.shared.IdGenerator" />
+        </id>
+        
+        <many-to-one name="report" column="reportId"
+            class="Report" cascade="delete" />
+            
+        <!--  <many-to-one name="reportDefinitionParam" column="reportDefParamId"
+            class="ReportDefinitionParam" cascade="delete" /> -->
+        <property name="reportDefParamIdMark" type="java.lang.String" />
+
+        <property name="value" type="java.lang.String" /> 
+    </class>
+    
+    <class
+        name="ReportResult"
+        table="reports_result">
+        
+        <id name="resultId" length="36"
+            type="org.sakaiproject.metaobj.shared.IdType" column="resultId">
+            <generator class="org.sakaiproject.metaobj.shared.IdGenerator" />
+        </id>
+        
+        <many-to-one name="report" column="reportId"
+            class="Report" cascade="none" />
+
+        <property name="userId" type="java.lang.String" />
+        <property name="title" type="java.lang.String" />
+        <property name="keywords" type="java.lang.String" />
+        <property name="description" type="java.lang.String" />
+        <property name="creationDate" type="java.util.Date" />
+        <property name="xml" type="text" length="16777215" />
+    </class>
+    
+    <query name="findResultsByUser">
+		from ReportResult r WHERE r.userId=?
+   </query>
+    <query name="findResultsById">
+		from ReportResult r WHERE r.resultId=?
+   </query>
+    <query name="findReportsByUser">
+		from Report r WHERE r.userId=? AND r.isLive=1 AND r.display=1
+   </query>
+    
+    <query name="findResultsByReport">
+		from ReportResult rr WHERE rr.report=?
+   </query>
+   <query name="findReportById">
+		from Report r WHERE reportId=?
+   </query>
+    <query name="findReportDefinitionFiles">
+		from ReportDefinitionXmlFile
+   </query>
+    <query name="findReportDefinitionFileById">
+		from ReportDefinitionXmlFile r WHERE r.reportDefId =?
+   </query>
+    <query name="find24ReportDefinitions">
+		from ReportDefinitionXmlFile r
+   </query>
+    
+</hibernate-mapping>
