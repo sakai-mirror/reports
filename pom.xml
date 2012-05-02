@@ -3,13 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>pom</packaging>
   <parent>
-        <groupId>org.sakaiproject.purepoms</groupId>
-        <artifactId>sakai-standard-tool</artifactId>
-        <version>2.9-SNAPSHOT</version>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>master</artifactId>
+        <version>2.10-SNAPSHOT</version>
     </parent>
   <name>sakai-reports</name>
   <groupId>org.sakaiproject.reports</groupId>
-  <artifactId>reports-base</artifactId>
+  <artifactId>reports</artifactId>
+  <version>2.10-SNAPSHOT</version>
   <organization>
     <name>sakai</name>
     <url>http://sakaiproject.org/</url>
@@ -31,12 +32,8 @@
   <properties>
         <url.localsite>scp://source.sakaiproject.org/var/www/html/release/reports/${project.version}</url.localsite>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sakai.jsf.version>2.9-SNAPSHOT</sakai.jsf.version>
-        <sakai.scheduler.version>2.9-SNAPSHOT</sakai.scheduler.version>
-        <sakai.metaobj.version>2.9-SNAPSHOT</sakai.metaobj.version>
-        <sakai.osp.version>2.9-SNAPSHOT</sakai.osp.version>
-        <sakai.taggable.version>2.9-SNAPSHOT</sakai.taggable.version>
-        <sakai.quartz.version>1.6.6</sakai.quartz.version>
+        <sakai.metaobj.version>${sakai.version}</sakai.metaobj.version>
+        <sakai.osp.version>${sakai.version}</sakai.osp.version>
     </properties>
   <build>
     <resources/>
