@@ -193,7 +193,11 @@ public class LoadArtifactResultProcessor extends BaseResultProcessor {
 
                //String uri = ContentHostingService.resolveUuid(holder.artifactId.getValue());
                try {
-                  ContentResource resource = getContentHosting().getResource(holder.artifactId.getValue());
+                   // is this the resource id or guid, or can it be either?
+                   
+                   String resourceId = getContentHosting().resolveUuid(holder.artifactId.getValue());
+                   
+                   ContentResource resource = getContentHosting().getResource(resourceId);
 
                   // this code comes from the ResourceTypePropertyAccess.getPropertyValue
                   String propName = resource.getProperties().getNamePropStructObjType();

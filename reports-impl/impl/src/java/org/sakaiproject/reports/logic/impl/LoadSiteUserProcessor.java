@@ -31,7 +31,6 @@ import org.sakaiproject.reports.model.ReportResult;
 import org.sakaiproject.reports.logic.impl.BaseResultProcessor;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
@@ -61,7 +60,6 @@ public class LoadSiteUserProcessor extends BaseResultProcessor {
    private String columnNamePattern = ".*_siteuser$";
    private String GROUP_LIST_DELIMITER = ";";
    private Cache userCache = null;
-   private Cache siteCache = null;
    
    /**
     * Post Processor method
@@ -161,43 +159,7 @@ public class LoadSiteUserProcessor extends BaseResultProcessor {
 	   }
    }
    
-	private String ListToString(String[] strArray) {
-		String result = "";
-		if (strArray != null) {
-			for (int i = 0; i < strArray.length; i++) {
-            if (i == 0) {
-               result = strArray[i];
-            } else {
-               result = result.concat(",").concat(strArray[i]);
-            }
-			}
-		}
-		return result;
-	}
 	
-	private Site lookupSite(String siteId) throws IdUnusedException {
-		Site site = null;
-		try {
-			net.sf.ehcache.Element elem = null;
-			if(siteId != null)
-				elem = siteCache.get(siteId);
-			if(siteCache != null && elem != null) {
-				if(elem.getValue() != null)
-					site = (Site)elem.getValue();
-			}
-		} catch(CacheException e) {
-			logger.warn("the site ehcache had an exception", e);					   
-		}
-
-		if (site == null) {
-			site = SiteService.getSite(siteId);			
-		}
-
-		if(siteCache != null)
-			siteCache.put(new net.sf.ehcache.Element(siteId, site));
-
-		return site;
-	}
 	
 	private User lookupUser(String userId) throws UserNotDefinedException {
 		User user = null;
@@ -249,11 +211,4 @@ public class LoadSiteUserProcessor extends BaseResultProcessor {
 	   this.userCache = userCache;
    }
 
-   public Cache getSiteCache() {
-	   return siteCache;
-   }
-
-   public void setSiteCache(Cache siteCache) {
-	   this.siteCache = siteCache;
-   }
 }

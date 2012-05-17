@@ -57,8 +57,6 @@ public class ActivityPostProcessor extends BaseResultProcessor {
 
    private String columnNamePattern = ".*_ACTIVITY$";
    
-   private Cache siteCache = null;
-   
    TaggingManager taggingManager = null;
    TaggingProvider provider = null;
    
@@ -126,30 +124,6 @@ public class ActivityPostProcessor extends BaseResultProcessor {
 		   }
 	   }
    }
-	
-	private Site lookupSite(String siteId) throws IdUnusedException {
-		Site site = null;
-		try {
-			net.sf.ehcache.Element elem = null;
-			if(siteId != null)
-				elem = siteCache.get(siteId);
-			if(siteCache != null && elem != null) {
-				if(elem.getValue() != null)
-					site = (Site)elem.getValue();
-			}
-		} catch(CacheException e) {
-			logger.warn("the site ehcache had an exception", e);					   
-		}
-
-		if (site == null) {
-			site = SiteService.getSite(siteId);			
-		}
-
-		if(siteCache != null)
-			siteCache.put(new net.sf.ehcache.Element(siteId, site));
-
-		return site;
-	}
 
 
    protected String getColumnData(Element data) {
@@ -167,14 +141,6 @@ public class ActivityPostProcessor extends BaseResultProcessor {
 
    public void setColumnNamePattern(String columnNamePattern) {
       this.columnNamePattern = columnNamePattern;
-   }
-
-   public Cache getSiteCache() {
-	   return siteCache;
-   }
-
-   public void setSiteCache(Cache siteCache) {
-	   this.siteCache = siteCache;
    }
 
 public TaggingManager getTaggingManager() {
