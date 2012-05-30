@@ -9,7 +9,7 @@
             <sakai:view_title value="#{msgs.title_import_report_def}" indent="1"/>
 
 
-            <sakai:messages />
+            <sakai:messages rendered="#{!empty facesContext.maximumSeverity}" />
             <h:outputText value="#{ReportsTool.invalidImportMessage}" style="color: red"
                                       rendered="#{ReportsTool.invalidImport}"/>
    <sakai:panel_edit>
