@@ -38,6 +38,11 @@
       <artifactId>reports-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.sakaiproject.reports</groupId>
+      <artifactId>reports-util</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.sakaiproject.metaobj</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
     </dependency>
