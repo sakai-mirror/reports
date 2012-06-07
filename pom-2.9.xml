@@ -5,7 +5,7 @@
   <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>2.10-SNAPSHOT</version>
+        <version>2.9-SNAPSHOT</version>
     </parent>
   <name>sakai-reports</name>
   <groupId>org.sakaiproject.reports</groupId>
@@ -38,6 +38,7 @@
         <sakai.osp.version>${sakai.version}</sakai.osp.version>
         <sakai.quartz.group>org.opensymphony.quartz</sakai.quartz.group>
         <sakai.taggable.group>org.sakaiproject.taggable</sakai.taggable.group>
+        
     </properties>
   <build>
     <resources/>
@@ -91,6 +92,12 @@
          <artifactId>quartz</artifactId>
          <version>${sakai.quartz.version}</version>
          <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0</version>
+      <scope>provided</scope>
     </dependency>
     </dependencies>
   </dependencyManagement>

@@ -29,7 +29,7 @@
       <artifactId>sakai-kernel-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject.metaobj</groupId>
+      <groupId>${sakai.metaobj.group}</groupId>
       <artifactId>sakai-metaobj-api</artifactId>
     </dependency>
     <dependency>
@@ -43,7 +43,7 @@
       <version>1.6</version>
     </dependency>
     <dependency>
-      <groupId>org.opensymphony.quartz</groupId>
+      <groupId>${sakai.quartz.group}</groupId>
       <artifactId>quartz</artifactId>
     </dependency>
     <dependency>

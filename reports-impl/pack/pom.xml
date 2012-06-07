@@ -35,7 +35,7 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject.metaobj</groupId>
+      <groupId>${sakai.metaobj.group}</groupId>
       <artifactId>sakai-metaobj-tool-lib</artifactId>
       <version>${sakai.metaobj.version}</version>
       <exclusions>
@@ -58,7 +58,7 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject.metaobj</groupId>
+      <groupId>${sakai.metaobj.group}</groupId>
       <artifactId>sakai-metaobj-impl</artifactId>
       <version>${sakai.metaobj.version}</version>
       <exclusions>
@@ -79,6 +79,27 @@
           <artifactId>portlet-api</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xmlParserAPIs</artifactId>
+      <version>2.6.2</version>
+      <type>jar</type>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.6.2</version>
+      <type>jar</type>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
+      <version>2.6.0</version>
+      <type>jar</type>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
   <build>
