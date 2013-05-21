@@ -23,6 +23,7 @@ package org.sakaiproject.reports.model;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.metaobj.shared.model.Id;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -475,5 +476,14 @@ public void setUsesWizard(boolean usesWizard) {
 
     public void setVendorQuery(Map vendorQuery) {
         this.vendorQuery = vendorQuery;
+    }
+    
+    public static class ReportDefinitionComparator implements Comparator<ReportDefinition> {
+
+		@Override
+		public int compare(ReportDefinition rd1, ReportDefinition rd2) {
+			return rd1.getTitle().compareToIgnoreCase(rd2.getTitle());
+		}
+    	
     }
 }

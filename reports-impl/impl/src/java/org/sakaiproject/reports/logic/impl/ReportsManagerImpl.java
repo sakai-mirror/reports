@@ -480,12 +480,10 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
      * This is a stub.
      */
     private List loadReportsFromDB() {
-        List reportDefArray = new ArrayList();
-            List reportDefs = getHibernateTemplate().findByNamedQuery("findReportDefinitionFiles");
+        List<ReportDefinition> reportDefArray = new ArrayList<ReportDefinition>();
+            List<ReportDefinitionXmlFile> reportDefs = getHibernateTemplate().findByNamedQuery("findReportDefinitionFiles");
 
-            for (Iterator i = reportDefs.iterator(); i.hasNext();) {
-                ReportDefinitionXmlFile xmlFile = (ReportDefinitionXmlFile) i.next();
-
+            for (ReportDefinitionXmlFile xmlFile : reportDefs) {
                 ListableBeanFactory beanFactory = new XmlBeanFactory(new ByteArrayResource(xmlFile.getXmlFile()), getBeanFactory());
                 ReportDefinition repDef = getReportDefBean(beanFactory);
                 repDef.finishLoading();
@@ -495,6 +493,7 @@ public class ReportsManagerImpl extends HibernateDaoSupport implements ReportsMa
                     reportDefArray.add(repDef);
                 }
             }
+            Collections.sort(reportDefArray, new ReportDefinition.ReportDefinitionComparator());
         return reportDefArray;
 
 
