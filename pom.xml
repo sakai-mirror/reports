@@ -36,7 +36,7 @@
         <sakai.metaobj.version>${sakai.version}</sakai.metaobj.version>
         <sakai.osp.group>org.sakaiproject.osp</sakai.osp.group>
         <sakai.osp.version>${sakai.version}</sakai.osp.version>
-        <sakai.quartz.group>org.opensymphony.quartz</sakai.quartz.group>
+        <sakai.quartz.group>org.quartz-scheduler</sakai.quartz.group>
         <sakai.taggable.group>org.sakaiproject.taggable</sakai.taggable.group>
     </properties>
   <build>
