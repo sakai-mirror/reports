@@ -98,18 +98,15 @@
     <dependency>
       <groupId>org.sakaiproject.jsf</groupId>
       <artifactId>jsf-tool</artifactId>
-      <version>${sakai.jsf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.jsf</groupId>
       <artifactId>jsf-app</artifactId>
-      <version>${sakai.jsf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject.jsf</groupId>
       <artifactId>jsf-widgets-sun-depend</artifactId>
       <type>pom</type>
-      <version>${sakai.jsf.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

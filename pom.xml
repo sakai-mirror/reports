@@ -28,7 +28,6 @@
     <module>reports-impl/pack</module>
     <module>reports-tool/tool</module>
     <module>reports-util/util</module>
-    <module>reports-assembly/assembly</module>
   </modules>
   <properties>
         <url.localsite>scp://source.sakaiproject.org/var/www/html/release/reports/${project.version}</url.localsite>
@@ -66,19 +65,19 @@
       <dependency>
         <groupId>${sakai.taggable.group}</groupId>
         <artifactId>sakai-taggable-api</artifactId>
-        <version>${sakai.taggable.version}</version>
+        <version>${sakai.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.scheduler</groupId>
         <artifactId>scheduler-api</artifactId>
-        <version>${sakai.scheduler.version}</version>
+        <version>${sakai.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.scheduler</groupId>
         <artifactId>scheduler-component-shared</artifactId>
-        <version>${sakai.scheduler.version}</version>
+        <version>${sakai.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
