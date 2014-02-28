@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>10.0-SNAPSHOT</version>
+        <version>10-SNAPSHOT</version>
         <relativePath>../master/pom.xml</relativePath>
     </parent>
     <name>sakai-reports</name>
     <groupId>org.sakaiproject.reports</groupId>
     <artifactId>reports</artifactId>
-    <version>10.0-SNAPSHOT</version>
+    <version>10-SNAPSHOT</version>
     <organization>
         <name>sakai</name>
         <url>http://sakaiproject.org/</url>
