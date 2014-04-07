@@ -94,7 +94,7 @@ public class ActivityPostProcessor extends BaseResultProcessor {
 			   attr.setText(activityRef);
 			   activityElm.addContent(attr);
 
-			   TaggableActivity activity = getTaggingManager().getActivity(activityRef, getProvider(), null);
+			   TaggableActivity activity = getTaggingManager().getActivity(activityRef, getProvider());
 			   
 			   attr = new Element("title");
 			   attr.setText(activity.getTitle());

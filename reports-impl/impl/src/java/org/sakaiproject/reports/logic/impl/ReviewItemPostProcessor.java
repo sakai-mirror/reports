@@ -192,7 +192,7 @@ public class ReviewItemPostProcessor extends BaseResultProcessor {
 	   List<TaggingProvider> providers = getTaggingManager().getProviders();
 	   for (TaggingProvider provider : providers) {
 			for (Link link : links) {
-				TaggableActivity activity = getTaggingManager().getActivity(link.getActivityRef(), provider, null);
+				TaggableActivity activity = getTaggingManager().getActivity(link.getActivityRef(), provider);
 				if (activity != null) {
 					TaggableActivityProducer producer = getTaggingManager().findProducerByRef(activity.getReference());
 					if (producer.getItemPermissionOverride() != null) {
