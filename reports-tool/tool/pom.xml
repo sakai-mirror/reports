@@ -78,7 +78,7 @@
             <artifactId>scheduler-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.quartz-scheduler</groupId>
+            <groupId>org.opensymphony.quartz</groupId>
             <artifactId>quartz</artifactId>
         </dependency>
         <dependency>
@@ -86,7 +86,7 @@
             <artifactId>commons-fileupload</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
+            <groupId>javax.servlet</groupId>
             <artifactId>jsp-api</artifactId>
         </dependency>
         <dependency>

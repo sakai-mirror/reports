@@ -39,7 +39,7 @@
             <version>${sakai.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.quartz-scheduler</groupId>
+            <groupId>org.opensymphony.quartz</groupId>
             <artifactId>quartz</artifactId>
         </dependency>
         <dependency>

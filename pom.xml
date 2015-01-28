@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>11-SNAPSHOT</version>
+        <version>2.9.3</version>
         <relativePath>../master/pom.xml</relativePath>
     </parent>
     <name>sakai-reports</name>
@@ -33,6 +32,13 @@
     <properties>
         <url.localsite>scp://source.sakaiproject.org/var/www/html/release/reports/${project.version}</url.localsite>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sakai.metaobj.group>org.sakaiproject.metaobj</sakai.metaobj.group>
+        <sakai.metaobj.version>${sakai.version}</sakai.metaobj.version>
+        <sakai.osp.group>org.sakaiproject.osp</sakai.osp.group>
+        <sakai.osp.version>${sakai.version}</sakai.osp.version>
+        <sakai.quartz.group>org.opensymphony.quartz</sakai.quartz.group>
+        <sakai.taggable.group>org.sakaiproject.taggable</sakai.taggable.group>
+
     </properties>
     <build>
         <resources/>
@@ -40,20 +46,58 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>${sakai.metaobj.group}</groupId>
+                <artifactId>sakai-metaobj-api</artifactId>
+                <version>${sakai.metaobj.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>${sakai.osp.group}</groupId>
+                <artifactId>osp-common-api</artifactId>
+                <version>${sakai.osp.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>${sakai.osp.group}</groupId>
+                <artifactId>osp-matrix-api</artifactId>
+                <version>${sakai.osp.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>${sakai.taggable.group}</groupId>
+                <artifactId>sakai-taggable-api</artifactId>
+                <version>${sakai.taggable.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.scheduler</groupId>
+                <artifactId>scheduler-api</artifactId>
+                <version>${sakai.scheduler.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.sakaiproject.scheduler</groupId>
+                <artifactId>scheduler-component-shared</artifactId>
+                <version>${sakai.scheduler.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.sakaiproject.reports</groupId>
                 <artifactId>reports-api</artifactId>
                 <version>${project.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.reports</groupId>
-                <artifactId>reports-component-shared</artifactId>
-                <version>${project.version}</version>
+                <groupId>${sakai.quartz.group}</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${sakai.quartz.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.sakaiproject.reports</groupId>
-                <artifactId>reports-util</artifactId>
-                <version>${project.version}</version>
+                <groupId>javax.servlet.jsp</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>2.0</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

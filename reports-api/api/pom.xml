@@ -47,7 +47,7 @@
             <version>1.6</version>
         </dependency>
         <dependency>
-            <groupId>org.quartz-scheduler</groupId>
+            <groupId>org.opensymphony.quartz</groupId>
             <artifactId>quartz</artifactId>
         </dependency>
         <dependency>

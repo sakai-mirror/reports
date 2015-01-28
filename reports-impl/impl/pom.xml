@@ -6,7 +6,7 @@
         <artifactId>reports</artifactId>
         <groupId>org.sakaiproject.reports</groupId>
         <version>11-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../../pom-2.9.xml</relativePath>
     </parent>
     <name>Reports Components Shared</name>
     <groupId>org.sakaiproject.reports</groupId>
@@ -31,20 +31,20 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
+            <artifactId>hibernate</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
+            <artifactId>spring</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-orm</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.sakaiproject.kernel</groupId>
             <artifactId>sakai-kernel-api</artifactId>
@@ -88,7 +88,7 @@
             <artifactId>sakai-taggable-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.quartz-scheduler</groupId>
+            <groupId>org.opensymphony.quartz</groupId>
             <artifactId>quartz</artifactId>
         </dependency>
         <dependency>
@@ -109,7 +109,7 @@
             <version>1.6</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
+            <groupId>javax.servlet</groupId>
             <artifactId>jsp-api</artifactId>
         </dependency>
         <dependency>
