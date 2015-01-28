@@ -5,8 +5,8 @@
     <parent>
         <artifactId>reports</artifactId>
         <groupId>org.sakaiproject.reports</groupId>
-        <version>11-SNAPSHOT</version>
-        <relativePath>../../pom-2.9.xml</relativePath>
+        <version>2.9-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <name>Reports Components Shared</name>
     <groupId>org.sakaiproject.reports</groupId>

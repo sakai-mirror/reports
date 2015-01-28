@@ -5,7 +5,7 @@
     <parent>
         <artifactId>reports</artifactId>
         <groupId>org.sakaiproject.reports</groupId>
-        <version>11-SNAPSHOT</version>
+        <version>2.9-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <name>Reports Tool</name>
@@ -41,6 +41,7 @@
         <dependency>
             <groupId>org.sakaiproject.reports</groupId>
             <artifactId>reports-util</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.sakaiproject.metaobj</groupId>
