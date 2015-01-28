@@ -431,7 +431,7 @@
         </property>
     </bean>
 <bean id="org.sakaiproject.reports.siteCache"
-		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		class="org.sakaiproject.memory.util.EhCacheFactoryBean">
 		<property name="cacheManager">
 			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager" />
 		</property>
@@ -446,7 +446,7 @@
 	</bean>
 	
 	<bean id="org.sakaiproject.reports.userCache"
-		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		class="org.sakaiproject.memory.util.EhCacheFactoryBean">
 		<property name="cacheManager">
 			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager" />
 		</property>
@@ -461,7 +461,7 @@
 	</bean>
 	
 	<bean id="org.sakaiproject.reports.taggableItemCache"
-		class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		class="org.sakaiproject.memory.util.EhCacheFactoryBean">
 		<property name="cacheManager">
 			<ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager" />
 		</property>
